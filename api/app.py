@@ -8,7 +8,7 @@ from os import getenv
 
 
 def create_app():
-    app = Flask(__name__, template_folder="../templates")
+    app = Flask(__name__, template_folder="../templates", static_folder="../static")
     app.config["CACHE_TYPE"] = "simple"
     app.config["CACHE_DEFAULT_TIMEOUT"] = 300
     app.secret_key = getenv("FLASK_KEY")
