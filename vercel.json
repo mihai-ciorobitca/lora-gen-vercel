@@ -1,8 +1,12 @@
 {
-    "routes" : [
+    "routes": [
         {
             "src": "/(.*)",
             "dest": "/api/app.py"
+        },
+        {
+            "src": "/static/(.*)",
+            "dest": "/static/$1"
         }
     ]
 }
