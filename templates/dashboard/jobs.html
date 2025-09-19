@@ -367,26 +367,32 @@
               </article>
             </div>
 
-            <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700 max-h-[80vh]">
+            <div class="overflow-x-auto max-h-[80vh] rounded-lg border border-gray-200 dark:border-gray-700">
               <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
                 {% for job in jobs %}
                 <div
                   class="bg-white dark:bg-gray-900 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
 
+                  <!-- Card Header -->
+                  <div
+                    class="px-4 py-2 bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                    <h3 class="text-gray-800 dark:text-gray-100 font-semibold text-sm line-clamp-1">Job #{{ job.id }}
+                    </h3>
+                    <span class="text-gray-500 dark:text-gray-400 text-xs">{{ job.created_at.split('.')[0].replace('T',
+                      ' ') }}</span>
+                  </div>
+
                   <!-- Image Preview -->
                   <div class="relative">
                     <img
                       src="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/{{ user.email }}/{{ job.id }}.jpeg"
-                      alt="Preview" class="w-full h-48 object-cover rounded-t-xl">
-                    <span class="absolute top-2 left-2 bg-gray-800 bg-opacity-70 text-white text-xs px-2 py-1 rounded">
-                      {{ job.created_at.split('.')[0].replace('T', ' ') }}
-                    </span>
+                      alt="Preview" class="w-full h-48 object-cover">
                   </div>
 
                   <!-- Content -->
                   <div class="p-4 flex flex-col gap-3">
                     <!-- Prompt -->
-                    <p class="text-gray-700 dark:text-gray-300 text-sm line-clamp-2">{{ job.prompt }}</p>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm line-clamp-3">{{ job.prompt }}</p>
 
                     <!-- Buttons and Status -->
                     <div class="flex justify-between items-center mt-2">
@@ -398,7 +404,7 @@
                       </a>
 
                       <!-- Status -->
-                      <div class="ml-2">
+                      <div class="ml-2 flex items-center justify-center">
                         {% if job.status == False %}
                         <span class="text-yellow-500 text-xl animate-pulse">⏳</span>
                         {% else %}
@@ -410,36 +416,7 @@
                 </div>
                 {% endfor %}
               </div>
-
-              <!-- Pagination -->
-              <div class="flex justify-end mt-4">
-                <ul class="flex items-center space-x-2">
-                  {% set pagination_buttons = [
-                  {'action': 'first_page', 'icon': 'double-left'},
-                  {'action': 'prev_page', 'icon': 'left'},
-                  {'action': 'next_page', 'icon': 'right'}
-                  ] %}
-
-                  {% for btn in pagination_buttons %}
-                  <li>
-                    {% if (btn.action == 'next_page' and has_next_page > 0) or (btn.action != 'next_page' and page > 0)
-                    %}
-                    <form action="{{ url_for('dashboard.' + btn.action) }}" method="post">
-                      <button type="submit"
-                        class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition-all duration-150">
-                        <!-- SVG icon depending on btn.icon -->
-                      </button>
-                    </form>
-                    {% else %}
-                    <button disabled
-                      class="w-10 h-10 rounded-full text-gray-400 dark:text-gray-600 cursor-not-allowed"></button>
-                    {% endif %}
-                  </li>
-                  {% endfor %}
-                </ul>
-              </div>
             </div>
-
           </div>
           <!-- Content End -->
         </div>
