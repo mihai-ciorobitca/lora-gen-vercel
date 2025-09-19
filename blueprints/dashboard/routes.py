@@ -33,27 +33,10 @@ def login_required(f):
 @dashboard_bp.get("/")
 @login_required
 def dashboard_get(user):
-    email_verified = user.get("email_verified")
-
-    try:
-        response = (
-            supabase.table("jobs")
-            .select("id, created_at, prompt, email")
-            .eq("email", session["user"])
-            .order("created_at", desc=True)
-            .limit(5)
-            .execute()
-        )
-        last_jobs = response.data if response.data else []
-    except Exception as e:
-        last_jobs = []
-        flash("Could not load jobs.", "danger")
-
     return render_template(
         "dashboard/dashboard.html",
         user=user,
-        last_jobs=last_jobs,
-        restricted=not email_verified,
+        restricted=not user.get("email_verified"),
     )
 
 
@@ -99,7 +82,6 @@ def dashboard_jobs(user):
         supabase.table("jobs")
         .select("id, status, created_at, email, prompt")
         .eq("email", session["user"])
-        .range(page * page_size, (page + 1) * page_size)
         .order("created_at", desc=True)
         .execute()
     )
@@ -109,19 +91,12 @@ def dashboard_jobs(user):
     pending_jobs = len([job for job in jobs if not job["status"]])
     done_jobs = len(jobs) - pending_jobs
 
-    if len(jobs) > page_size:
-        jobs = jobs[:page_size]
-        has_next_page = True
-    else:
-        has_next_page = False
-
     return render_template(
         "dashboard/jobs.html",
         jobs=jobs,
         pending_jobs=pending_jobs,
         done_jobs=done_jobs,
         page=page,
-        has_next_page=has_next_page,
         user=user,
     )
 
@@ -142,27 +117,5 @@ def dashboard_reset():
         print(str(e))
         flash(str(e), "reset_danger")
     return redirect(url_for("dashboard.dashboard_user"))
-
-
-@dashboard_bp.post("/jobs/next")
-@login_required
-def next_page():
-    page = session.get("page", 0)
-    session["page"] = page + 1
-    return redirect(url_for("dashboard.dasboard_jobs"))
-
-
-@dashboard_bp.post("/jobs/prev")
-@login_required
-def prev_page():
-    page = session.get("page", 0)
-    if page > 0:
-        session["page"] = page - 1
-    return redirect(url_for("dashboard.dasboard_jobs"))
-
-
-@dashboard_bp.post("/jobs/first")
-@login_required
-def first_page():
     session["page"] = 0
     return redirect(url_for("dashboard.dasboard_jobs"))
