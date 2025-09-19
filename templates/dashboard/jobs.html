@@ -47,17 +47,19 @@
     <header class="hidden lg:flex justify-between items-center bg-white dark:bg-gray-800 shadow px-6 py-3">
         <h1 class="text-2xl font-semibold">Dashboard</h1>
         <nav class="flex items-center space-x-5">
-            <a href="#"
+            <a href="{{ url_for('dashboard_get') }}"
                 class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-fast text-lg">
                 <i class="fa-solid fa-house text-base"></i>
                 <span>Home</span>
             </a>
-            <a href="#"
+
+            <a href="{{ url_for('dashboard_jobs') }}"
                 class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-green-600 transition-fast text-lg">
                 <i class="fa-solid fa-briefcase text-base"></i>
                 <span>Jobs</span>
             </a>
-            <a href="#"
+
+            <a href="{{ url_for('dashboard_settings') }}"
                 class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-gray-400 transition-fast text-lg">
                 <i class="fa-solid fa-gear text-base"></i>
                 <span>Settings</span>
@@ -68,12 +70,13 @@
                 <i class="fa-solid fa-sun text-base" id="mode-icon"></i>
             </button>
 
-            <button
+            <a href="{{ url_for('logout') }}"
                 class="flex items-center space-x-1 bg-red-600 hover:bg-red-700 p-2 rounded-md text-white text-base transition-fast">
                 <i class="fa-solid fa-right-from-bracket"></i>
                 <span>Logout</span>
-            </button>
+            </a>
         </nav>
+
     </header>
 
     <!-- Mobile Top Nav -->
