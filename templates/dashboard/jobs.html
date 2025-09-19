@@ -10,6 +10,8 @@
       darkMode: 'class',
     }
   </script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-jQZsdnqfG2NUb6V2TmOZpHQq3kEzX/2yML7kLzD5qv+2+6p1qOZy9u+yOfn1r5F7/ZyF9pRO0O9R3U45p4b0bA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body class="h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 flex flex-col">
 
@@ -19,16 +21,12 @@
     <div class="flex items-center space-x-4">
       <!-- Dark mode toggle -->
       <button id="dark-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition">
-        <svg id="mode-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m8.485-8.485h-1M4.515 12.515h-1M16.95 7.05l-.707.707M7.757 16.243l-.707.707M16.95 16.95l-.707-.707M7.757 7.757l-.707-.707M12 5a7 7 0 0 0 0 14 7 7 0 0 0 0-14z"/>
-        </svg>
+        <i class="fa-solid fa-sun" id="mode-icon"></i>
       </button>
 
       <!-- Logout -->
       <button class="flex items-center space-x-2 bg-red-500 hover:bg-red-600 p-2 rounded-md text-white">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1m0-10V5"/>
-        </svg>
+        <i class="fa-solid fa-right-from-bracket"></i>
         <span>Logout</span>
       </button>
     </div>
@@ -44,27 +42,21 @@
           <h2 class="text-lg font-semibold">All Tasks</h2>
           <p class="text-gray-500 dark:text-gray-400 mt-2">120</p>
         </div>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-        </svg>
+        <i class="fa-solid fa-list-check text-blue-500 text-xl"></i>
       </div>
       <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow hover:shadow-lg transition flex items-center justify-between">
         <div>
           <h2 class="text-lg font-semibold">Completed Tasks</h2>
           <p class="text-gray-500 dark:text-gray-400 mt-2">80</p>
         </div>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-        </svg>
+        <i class="fa-solid fa-circle-check text-green-500 text-xl"></i>
       </div>
       <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow hover:shadow-lg transition flex items-center justify-between">
         <div>
           <h2 class="text-lg font-semibold">Pending Tasks</h2>
           <p class="text-gray-500 dark:text-gray-400 mt-2">40</p>
         </div>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3"/>
-        </svg>
+        <i class="fa-solid fa-hourglass-half text-yellow-500 text-xl"></i>
       </div>
     </div>
 
@@ -82,18 +74,12 @@
   </main>
 
   <!-- Mobile Bottom Nav -->
-  <nav class="fixed bottom-0 inset-x-0 bg-white dark:bg-gray-800 shadow-lg lg:hidden flex justify-between items-center px-6 py-2">
+  <nav class="fixed top-0 inset-x-0 bg-white dark:bg-gray-800 shadow-lg lg:hidden flex justify-between items-center px-6 py-2">
     <button id="open-sidebar" class="p-2 rounded-md bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition">
-      <!-- Hamburger icon -->
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-      </svg>
+      <i class="fa-solid fa-bars"></i>
     </button>
     <button id="dark-toggle-mobile" class="p-2 rounded-md bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition">
-      <!-- Sun/Moon icon -->
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m8.485-8.485h-1M4.515 12.515h-1M16.95 7.05l-.707.707M7.757 16.243l-.707.707M16.95 16.95l-.707-.707M7.757 7.757l-.707-.707M12 5a7 7 0 0 0 0 14 7 7 0 0 0 0-14z"/>
-      </svg>
+      <i class="fa-solid fa-sun"></i>
     </button>
   </nav>
 
@@ -102,29 +88,20 @@
     <div class="flex items-center justify-between p-4 border-b dark:border-gray-700">
       <h2 class="text-xl font-bold">Menu</h2>
       <button id="close-sidebar" class="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-        </svg>
+        <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
     <nav class="flex flex-col p-4 space-y-4">
       <a href="#" class="flex items-center space-x-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md p-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-5H9v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9z"/>
-        </svg>
+        <i class="fa-solid fa-house text-blue-500"></i>
         <span>Home</span>
       </a>
       <a href="#" class="flex items-center space-x-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md p-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6h13M9 11l4-4 4 4M13 21H3a2 2 0 0 1-2-2v-7"/>
-        </svg>
+        <i class="fa-solid fa-briefcase text-green-500"></i>
         <span>Jobs</span>
       </a>
       <a href="#" class="flex items-center space-x-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md p-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3a3 3 0 1 0 0-6z"/>
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.4 15a1.5 1.5 0 0 0 .6-1.4l-.3-1.3a1.5 1.5 0 0 0-1-1l-1.3-.3a1.5 1.5 0 0 0-1.4.6l-.9 1.5a1.5 1.5 0 0 0 .4 2.1l1.3.9a1.5 1.5 0 0 0 2.1-.4l.9-1.5z"/>
-        </svg>
+        <i class="fa-solid fa-gear text-yellow-500"></i>
         <span>Settings</span>
       </a>
     </nav>
