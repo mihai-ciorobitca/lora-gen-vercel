@@ -50,15 +50,16 @@
     </div>
 
     <!-- Main content -->
-    <main class="flex-1 mt-64 p-6 overflow-y-auto">
-      <!-- Jobs grid -->
-      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 overflow-hidden">
+    <main class="flex-1 mt-64 p-6">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 h-full flex flex-col">
         <h2 class="text-xl font-semibold mb-4">Jobs</h2>
-        <div class="overflow-x-auto">
+
+        <!-- Scrollable jobs grid -->
+        <div class="overflow-y-auto flex-1">
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {% for job in jobs %}
-            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg shadow hover:shadow-lg transition transform hover:-translate-y-1">
-              <!-- Card header with ID and formatted created_at -->
+            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg shadow hover:shadow-lg transition transform hover:-translate-y-1 flex flex-col">
+              <!-- Card header -->
               <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-600">
                 <span class="font-bold text-left">ID: {{ job.id }}</span>
                 <span class="text-sm text-gray-500 dark:text-gray-400 text-right">
@@ -66,8 +67,8 @@
                 </span>
               </div>
 
-              <!-- Image or placeholder -->
-              <div class="h-auto w-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center overflow-hidden">
+              <!-- Scrollable image -->
+              <div class="h-64 w-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center overflow-auto">
                 {% if job.status %}
                 <img src="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/{{ job.email }}/{{ job.id }}.jpeg"
                   alt="Job {{ job.id }}" class="object-contain w-full h-full">
@@ -78,7 +79,7 @@
                 {% endif %}
               </div>
 
-              <!-- Card footer with status & download button -->
+              <!-- Card footer -->
               <div class="p-4 flex justify-between items-center">
                 {% if not job.status %}
                 <span class="text-yellow-500 font-semibold">Pending</span>
