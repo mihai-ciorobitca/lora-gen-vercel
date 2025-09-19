@@ -27,6 +27,17 @@
         .transition-fast {
             transition: all 0.2s ease-in-out;
         }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            /* IE/Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
     </style>
 </head>
 
@@ -148,19 +159,16 @@
 
         <div class="flex-1 overflow-auto mt-4">
             <div
-                class="flex overflow-x-auto snap-x snap-mandatory space-x-4 sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-4">
+                class="flex overflow-x-auto snap-x snap-mandatory space-x-4 lg:grid lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 lg:gap-4 no-scrollbar">
                 {% for job in jobs %}
                 <div
-                    class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm card-hover transition-fast flex-shrink-0 w-full snap-center sm:w-auto">
+                    class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm card-hover transition-fast flex-shrink-0 w-full snap-center lg:w-auto">
                     <img src="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/{{ job.email }}/{{ job.id }}.jpeg"
                         class="w-full h-full object-cover">
                 </div>
                 {% endfor %}
             </div>
         </div>
-
-
-
     </main>
 
     <!-- Scripts -->
