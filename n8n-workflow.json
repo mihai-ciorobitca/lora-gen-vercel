@@ -1,0 +1,268 @@
+{
+  "name": "LoraGEN",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "generate-image",
+        "options": {
+          "rawBody": true
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -176,
+        0
+      ],
+      "id": "d011234e-fcd2-4949-8712-c5a3f105e9c2",
+      "name": "Start",
+      "webhookId": "6d7226c3-1cce-449a-bc77-5eefbe88cd38"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://ark.ap-southeast.bytepluses.com/api/v3/images/generations",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n    \"Content-Type\": \"application/json\",\n    \"Authorization\": \"Bearer 9f465bcb-5647-469c-9e90-c01732911a5c\"\n}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $node.Start.json.body.data }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        288,
+        0
+      ],
+      "id": "4cd4cbae-dc1c-40a3-9215-43def2a49a3d",
+      "name": "GenerateImage"
+    },
+    {
+      "parameters": {
+        "url": "={{$node.GenerateImage.json.data[0].url}}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        544,
+        128
+      ],
+      "id": "a80785a7-7076-4086-86a6-8ab2f559ff6d",
+      "name": "DownloadImage"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "=https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/{{ $node.Start.json.body.email }}/{{ $node.Start.json.body.id }}.jpeg",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n    \"Content-Type\": \"application/json\",\n    \"Authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im50dmliYXRlcXZhc2JleWdjc3ZyIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1ODE5MjgzNSwiZXhwIjoyMDczNzY4ODM1fQ.WjeMHJ63wFYC490gZIyOBBGNMLRZrn2tvkL0Mxaz9Y8\"\n}",
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        752,
+        128
+      ],
+      "id": "ad1bec8f-9aa6-4ea9-a9ad-e1fcc1ba1fbc",
+      "name": "SaveImage"
+    },
+    {
+      "parameters": {
+        "tableId": "jobs",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "id",
+              "fieldValue": "={{ $node.Start.json.body.id }}"
+            },
+            {
+              "fieldId": "email",
+              "fieldValue": "={{ $node.Start.json.body.email }}"
+            },
+            {
+              "fieldId": "prompt",
+              "fieldValue": "={{ $node.Start.json.body.data.prompt }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        48,
+        0
+      ],
+      "id": "00af3141-d39f-475e-b49c-e855b17868d8",
+      "name": "CreateRow",
+      "credentials": {
+        "supabaseApi": {
+          "id": "AM3zt0kPHRWcCUAM",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "jobs",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $node.Start.json.body.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "TRUE"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        944,
+        128
+      ],
+      "id": "c89bcf09-7739-41f5-892d-828a9e02b253",
+      "name": "UpdateStatus",
+      "credentials": {
+        "supabaseApi": {
+          "id": "AM3zt0kPHRWcCUAM",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "jobs",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $node.Start.json.body.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "url",
+              "fieldValue": "={{ $node.GenerateImage.json.data[0].url }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        560,
+        -192
+      ],
+      "id": "60757572-0f3a-4cbb-bb4d-c5fdadf45249",
+      "name": "UpdateUrl",
+      "credentials": {
+        "supabaseApi": {
+          "id": "AM3zt0kPHRWcCUAM",
+          "name": "Supabase account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "CreateRow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GenerateImage": {
+      "main": [
+        [
+          {
+            "node": "DownloadImage",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "UpdateUrl",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DownloadImage": {
+      "main": [
+        [
+          {
+            "node": "SaveImage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CreateRow": {
+      "main": [
+        [
+          {
+            "node": "GenerateImage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SaveImage": {
+      "main": [
+        [
+          {
+            "node": "UpdateStatus",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "69651514-eb85-4b92-b020-9febf4ebcaa4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9554ed6c4727d1f98802def147e004afcb20fa7fdb0bd1119224402f93205f93"
+  },
+  "id": "xDVRY7St1sNRutA5",
+  "tags": []
+}
