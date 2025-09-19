@@ -1,53 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
 </head>
-<body class="h-screen flex flex-col overflow-hidden bg-gray-100">
+<body class="h-screen flex flex-col overflow-hidden bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
 
     <!-- Header -->
-    <header class="bg-white shadow-md flex items-center justify-between px-6 py-4">
-        <nav class="flex space-x-6">
-            <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Home</a>
-            <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Jobs</a>
-            <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Settings</a>
+    <header class="bg-white dark:bg-gray-800 shadow-md flex flex-col sm:flex-row items-center justify-between px-6 py-4">
+        <nav class="flex flex-col sm:flex-row sm:space-x-6 space-y-2 sm:space-y-0 mb-2 sm:mb-0">
+            <a href="#" class="flex items-center space-x-2 hover:text-blue-500 dark:hover:text-blue-400 font-medium">
+                <!-- Home Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-5H9v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9z"/>
+                </svg>
+                <span>Home</span>
+            </a>
+            <a href="#" class="flex items-center space-x-2 hover:text-blue-500 dark:hover:text-blue-400 font-medium">
+                <!-- Jobs Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6h13M9 11l4-4 4 4M13 21H3a2 2 0 0 1-2-2v-7"/>
+                </svg>
+                <span>Jobs</span>
+            </a>
+            <a href="#" class="flex items-center space-x-2 hover:text-blue-500 dark:hover:text-blue-400 font-medium">
+                <!-- Settings Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3a3 3 0 1 0 0-6z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.4 15a1.5 1.5 0 0 0 .6-1.4l-.3-1.3a1.5 1.5 0 0 0-1-1l-1.3-.3a1.5 1.5 0 0 0-1.4.6l-.9 1.5a1.5 1.5 0 0 0 .4 2.1l1.3.9a1.5 1.5 0 0 0 2.1-.4l.9-1.5z"/>
+                </svg>
+                <span>Settings</span>
+            </a>
         </nav>
-        <button class="flex items-center space-x-2 text-gray-700 hover:text-red-600 font-medium">
-            <!-- Logout Icon (simple SVG) -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1m0-10V5" />
-            </svg>
-            <span>Logout</span>
-        </button>
+
+        <div class="flex items-center space-x-4">
+            <!-- Dark Mode Toggle -->
+            <button id="dark-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                <svg id="dark-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path id="icon-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m8.485-8.485h-1M4.515 12.515h-1M16.95 7.05l-.707.707M7.757 16.243l-.707.707M16.95 16.95l-.707-.707M7.757 7.757l-.707-.707M12 5a7 7 0 0 0 0 14a7 7 0 0 0 0-14z"/>
+                </svg>
+            </button>
+
+            <!-- Logout -->
+            <button class="flex items-center space-x-2 text-gray-700 dark:text-gray-200 hover:text-red-600 dark:hover:text-red-500 font-medium">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1m0-10V5"/>
+                </svg>
+                <span>Logout</span>
+            </button>
+        </div>
     </header>
 
     <!-- Main content -->
-    <main class="flex-1 p-6 flex flex-col gap-6 overflow-hidden">
+    <main class="flex-1 p-4 sm:p-6 flex flex-col gap-6 overflow-hidden">
 
         <!-- Tasks Cards -->
-        <div class="grid grid-cols-3 gap-6">
-            <div class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition">
-                <h2 class="text-lg font-semibold">All Tasks</h2>
-                <p class="text-gray-500 mt-2">120</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow hover:shadow-lg transition flex items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-semibold">All Tasks</h2>
+                    <p class="text-gray-500 dark:text-gray-400 mt-2">120</p>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
             </div>
-            <div class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition">
-                <h2 class="text-lg font-semibold">Completed Tasks</h2>
-                <p class="text-gray-500 mt-2">80</p>
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow hover:shadow-lg transition flex items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-semibold">Completed Tasks</h2>
+                    <p class="text-gray-500 dark:text-gray-400 mt-2">80</p>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
             </div>
-            <div class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition">
-                <h2 class="text-lg font-semibold">Pending Tasks</h2>
-                <p class="text-gray-500 mt-2">40</p>
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow hover:shadow-lg transition flex items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-semibold">Pending Tasks</h2>
+                    <p class="text-gray-500 dark:text-gray-400 mt-2">40</p>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3"/>
+                </svg>
             </div>
         </div>
 
         <!-- Images Grid -->
         <div class="flex-1 overflow-auto mt-4">
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                 {% for job in jobs %}
-                <div class="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition">
+                <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow hover:shadow-lg transition">
                     <img src="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/{{ job.email }}/{{ job.id }}.jpeg" class="w-full h-auto object-contain">
                 </div>
                 {% endfor %}
@@ -55,6 +104,13 @@
         </div>
 
     </main>
+
+    <script>
+        const toggle = document.getElementById('dark-toggle');
+        toggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+        });
+    </script>
 
 </body>
 </html>
