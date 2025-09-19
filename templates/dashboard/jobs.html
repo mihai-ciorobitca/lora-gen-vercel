@@ -12,6 +12,7 @@
         }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         body {
@@ -65,7 +66,8 @@
     </header>
 
     <!-- Mobile Top Nav -->
-    <nav class="fixed top-0 inset-x-0 bg-white dark:bg-gray-800 shadow flex justify-between items-center px-4 py-3 lg:hidden z-50">
+    <nav
+        class="fixed top-0 inset-x-0 bg-white dark:bg-gray-800 shadow flex justify-between items-center px-4 py-3 lg:hidden z-50">
         <button id="open-sidebar"
             class="p-2 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-fast">
             <i class="fa-solid fa-bars text-lg"></i>
@@ -117,66 +119,47 @@
     <main class="flex-1 overflow-auto p-6 flex flex-col gap-6 mt-16 lg:mt-0">
 
         <!-- Tasks Cards -->
-        <div class="lg:grid lg:grid-cols-3 gap-6">
-            <!-- Mobile horizontal scroll -->
-            <div class="flex space-x-4 overflow-x-auto py-2 lg:hidden px-2">
-                <div
-                    class="min-w-[180px] bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm card-hover flex-shrink-0 flex flex-col items-center justify-between">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div
+                class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm card-hover flex items-center justify-between transition-fast">
+                <div>
                     <h2 class="text-md font-medium text-gray-800 dark:text-gray-100">All Tasks</h2>
                     <p class="text-gray-500 dark:text-gray-400 mt-1 text-lg font-semibold">120</p>
-                    <i class="fa-solid fa-list-check text-blue-600 text-2xl mt-2"></i>
                 </div>
-                <div
-                    class="min-w-[180px] bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm card-hover flex-shrink-0 flex flex-col items-center justify-between">
+                <i class="fa-solid fa-list-check text-blue-600 text-2xl"></i>
+            </div>
+            <div
+                class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm card-hover flex items-center justify-between transition-fast">
+                <div>
                     <h2 class="text-md font-medium text-gray-800 dark:text-gray-100">Completed</h2>
                     <p class="text-gray-500 dark:text-gray-400 mt-1 text-lg font-semibold">80</p>
-                    <i class="fa-solid fa-circle-check text-green-600 text-2xl mt-2"></i>
                 </div>
-                <div
-                    class="min-w-[180px] bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm card-hover flex-shrink-0 flex flex-col items-center justify-between">
+                <i class="fa-solid fa-circle-check text-green-600 text-2xl"></i>
+            </div>
+            <div
+                class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm card-hover flex items-center justify-between transition-fast">
+                <div>
                     <h2 class="text-md font-medium text-gray-800 dark:text-gray-100">Pending</h2>
                     <p class="text-gray-500 dark:text-gray-400 mt-1 text-lg font-semibold">40</p>
-                    <i class="fa-solid fa-hourglass-half text-yellow-600 text-2xl mt-2"></i>
                 </div>
-            </div>
-
-            <!-- Desktop & tablet grid -->
-            <div class="hidden lg:grid lg:grid-cols-3 gap-6">
-                <div class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm card-hover flex items-center justify-between transition-fast">
-                    <div>
-                        <h2 class="text-md font-medium text-gray-800 dark:text-gray-100">All Tasks</h2>
-                        <p class="text-gray-500 dark:text-gray-400 mt-1 text-lg font-semibold">120</p>
-                    </div>
-                    <i class="fa-solid fa-list-check text-blue-600 text-2xl"></i>
-                </div>
-                <div class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm card-hover flex items-center justify-between transition-fast">
-                    <div>
-                        <h2 class="text-md font-medium text-gray-800 dark:text-gray-100">Completed</h2>
-                        <p class="text-gray-500 dark:text-gray-400 mt-1 text-lg font-semibold">80</p>
-                    </div>
-                    <i class="fa-solid fa-circle-check text-green-600 text-2xl"></i>
-                </div>
-                <div class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm card-hover flex items-center justify-between transition-fast">
-                    <div>
-                        <h2 class="text-md font-medium text-gray-800 dark:text-gray-100">Pending</h2>
-                        <p class="text-gray-500 dark:text-gray-400 mt-1 text-lg font-semibold">40</p>
-                    </div>
-                    <i class="fa-solid fa-hourglass-half text-yellow-600 text-2xl"></i>
-                </div>
+                <i class="fa-solid fa-hourglass-half text-yellow-600 text-2xl"></i>
             </div>
         </div>
 
-        <!-- Images Grid -->
+        <!-- Images Carousel/Grid -->
         <div class="flex-1 overflow-auto mt-4">
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            <div
+                class="flex space-x-4 overflow-x-auto snap-x snap-mandatory sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-4">
                 {% for job in jobs %}
-                <div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm card-hover transition-fast">
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm card-hover transition-fast flex-shrink-0 w-64 snap-center sm:w-auto">
                     <img src="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/{{ job.email }}/{{ job.id }}.jpeg"
-                        class="w-full h-full object-content">
+                        class="w-full h-48 object-cover">
                 </div>
                 {% endfor %}
             </div>
         </div>
+
 
     </main>
 
