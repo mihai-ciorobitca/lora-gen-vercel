@@ -30,53 +30,48 @@ def login_required(f):
     return decorated_function
 
 
-@dashboard_bp.get("/")
+@dashboard_bp.route("/", methods=["GET", "POST"])
 @login_required
-def dashboard_get(user):
+def home(user):
+    if request.method == "POST":
+        prompt = request.form.get("prompt")
+        unique_id = str(uuid.uuid4())
+        url = "https://secret-api-gt36.onrender.com/webhook/generate-image"
+        payload = {
+            "email": session["user"],
+            "id": unique_id,
+            "data": {
+                "model": "seedream-4-0-250828",
+                "prompt": prompt,
+                "image": [
+                    # TODO:
+                    "https://drive.google.com/uc?export=view&id=1SIzeGV7N8VZDDeVOXIjozAjUUcLXIc8W",
+                    "https://drive.google.com/uc?export=view&id=1bEGLvhK_KGF1qzj991VIbVeFFknjyhK7",
+                    "https://drive.google.com/uc?export=view&id=1YHJh-xj6dUCXhGYjeRlV7Js2YnSXcK0m",
+                ],
+                "size": "2K",
+            },
+        }
+        headers = {"Content-Type": "application/json"}
+        try:
+            requests.post(url, headers=headers, data=json.dumps(payload))
+            flash("Job submitted successfully.", "success")
+        except Exception as e:
+            logging.error("Image generation failed: %s\n%s", e, traceback.format_exc())
+            print(f"Error during image generation: {e}", flush=True)
+            flash("Failed to generate image.", "danger")
+        return redirect(url_for("dashboard.home"))
+
     return render_template(
         "dashboard/dashboard.html",
         user=user,
         restricted=not user.get("email_verified"),
     )
 
-
-@dashboard_bp.post("/")
-@login_required
-def dashboard_post(user):
-    prompt = request.form.get("prompt")
-    unique_id = str(uuid.uuid4())
-    url = "https://secret-api-gt36.onrender.com/webhook/generate-image"
-    payload = {
-        "email": session["user"],
-        "id": unique_id,
-        "data": {
-            "model": "seedream-4-0-250828",
-            "prompt": prompt,
-            "image": [
-                # TODO: user upload images
-                "https://drive.google.com/uc?export=view&id=1SIzeGV7N8VZDDeVOXIjozAjUUcLXIc8W",
-                "https://drive.google.com/uc?export=view&id=1bEGLvhK_KGF1qzj991VIbVeFFknjyhK7",
-                "https://drive.google.com/uc?export=view&id=1YHJh-xj6dUCXhGYjeRlV7Js2YnSXcK0m",
-            ],
-            "size": "2K",
-        },
-    }
-    headers = {"Content-Type": "application/json"}
-    try:
-        requests.post(url, headers=headers, data=json.dumps(payload))
-        flash("Job submitted successfully.", "success")
-    except Exception as e:
-        logging.error("Image generation failed: %s\n%s", e, traceback.format_exc())
-        print(f"Error during image generation: {e}", flush=True)
-        flash("Failed to generate image.", "danger")
-    return redirect(url_for("dashboard.dashboard_get"))
-
-
 @dashboard_bp.get("/jobs")
 @login_required
-def dashboard_jobs(user):
+def jobs(user):
     page = session.get("page", 0)
-    page_size = 10
 
     response = (
         supabase.table("jobs")
@@ -103,12 +98,12 @@ def dashboard_jobs(user):
 
 @dashboard_bp.get("/profile")
 @login_required
-def dashboard_user(user):
+def profile(user):
     return render_template("dashboard/profile.html", user=user)
 
 
 @dashboard_bp.post("/reset_password")
-def dashboard_reset():
+def reset():
     password = request.form.get("password")
     try:
         supabase.auth.update_user({"password": password})
@@ -117,5 +112,3 @@ def dashboard_reset():
         print(str(e))
         flash(str(e), "reset_danger")
     return redirect(url_for("dashboard.dashboard_user"))
-    session["page"] = 0
-    return redirect(url_for("dashboard.dasboard_jobs"))

@@ -47,35 +47,35 @@
   <header class="hidden lg:flex justify-between items-center bg-white dark:bg-gray-800 shadow px-6 py-3">
     <h1 class="text-2xl font-semibold">Dashboard</h1>
     <nav class="flex items-center space-x-5">
-            <a href="{{ url_for('dashboard_get') }}"
-                class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-fast text-lg">
-                <i class="fa-solid fa-house text-base"></i>
-                <span>Home</span>
-            </a>
+      <a href="{{ url_for('dashboard.home') }}"
+        class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-fast text-lg">
+        <i class="fa-solid fa-house text-base"></i>
+        <span>Home</span>
+      </a>
 
-            <a href="{{ url_for('dashboard_jobs') }}"
-                class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-green-600 transition-fast text-lg">
-                <i class="fa-solid fa-briefcase text-base"></i>
-                <span>Jobs</span>
-            </a>
+      <a href="{{ url_for('dashboard.jobs') }}"
+        class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-green-600 transition-fast text-lg">
+        <i class="fa-solid fa-briefcase text-base"></i>
+        <span>Jobs</span>
+      </a>
 
-            <a href="{{ url_for('dashboard_settings') }}"
-                class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-gray-400 transition-fast text-lg">
-                <i class="fa-solid fa-gear text-base"></i>
-                <span>Settings</span>
-            </a>
+      <a href="{{ url_for('dashboard.profile') }}"
+        class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-gray-400 transition-fast text-lg">
+        <i class="fa-solid fa-gear text-base"></i>
+        <span>Profile</span>
+      </a>
 
-            <button id="dark-toggle"
-                class="p-2 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-fast">
-                <i class="fa-solid fa-sun text-base" id="mode-icon"></i>
-            </button>
+      <button id="dark-toggle"
+        class="p-2 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-fast">
+        <i class="fa-solid fa-sun text-base" id="mode-icon"></i>
+      </button>
 
-            <a href="{{ url_for('logout') }}"
-                class="flex items-center space-x-1 bg-red-600 hover:bg-red-700 p-2 rounded-md text-white text-base transition-fast">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                <span>Logout</span>
-            </a>
-        </nav>
+      <a href="{{ url_for('logout') }}"
+        class="flex items-center space-x-1 bg-red-600 hover:bg-red-700 p-2 rounded-md text-white text-base transition-fast">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Logout</span>
+      </a>
+    </nav>
   </header>
 
   <!-- Mobile Top Nav -->
@@ -102,26 +102,34 @@
       </button>
     </div>
     <nav class="flex flex-col p-4 space-y-3">
-      <a href="#"
-        class="flex items-center space-x-2 p-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-fast">
-        <i class="fa-solid fa-house text-base text-blue-600"></i>
+      <a href="{{ url_for('dashboard.home') }}"
+        class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-fast text-lg">
+        <i class="fa-solid fa-house text-base"></i>
         <span>Home</span>
       </a>
-      <a href="#"
-        class="flex items-center space-x-2 p-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-fast">
-        <i class="fa-solid fa-briefcase text-base text-green-600"></i>
+
+      <a href="{{ url_for('dashboard.jobs') }}"
+        class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-green-600 transition-fast text-lg">
+        <i class="fa-solid fa-briefcase text-base"></i>
         <span>Jobs</span>
       </a>
-      <a href="#"
-        class="flex items-center space-x-2 p-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-fast">
-        <i class="fa-solid fa-gear text-base text-gray-500"></i>
-        <span>Settings</span>
+
+      <a href="{{ url_for('dashboard.profile') }}"
+        class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-gray-400 transition-fast text-lg">
+        <i class="fa-solid fa-gear text-base"></i>
+        <span>Profile</span>
       </a>
-      <button
-        class="flex items-center space-x-2 p-2 rounded-md bg-red-600 hover:bg-red-700 text-white transition-fast mt-2">
+
+      <button id="dark-toggle"
+        class="p-2 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-fast">
+        <i class="fa-solid fa-sun text-base" id="mode-icon"></i>
+      </button>
+
+      <a href="{{ url_for('logout') }}"
+        class="flex items-center space-x-1 bg-red-600 hover:bg-red-700 p-2 rounded-md text-white text-base transition-fast">
         <i class="fa-solid fa-right-from-bracket"></i>
         <span>Logout</span>
-      </button>
+      </a>
     </nav>
   </aside>
 
