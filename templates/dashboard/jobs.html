@@ -146,18 +146,14 @@
             </div>
         </div>
 
-        <!-- Images Carousel/Grid -->
-        <div class="flex-1 overflow-auto mt-4">
+        <div id="swipe-deck" class="relative w-full h-[400px] max-w-sm mx-auto">
+            {% for job in jobs %}
             <div
-                class="flex space-x-4 overflow-x-auto snap-x snap-mandatory sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-4">
-                {% for job in jobs %}
-                <div
-                    class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm card-hover transition-fast flex-shrink-0 w-64 snap-center sm:w-auto">
-                    <img src="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/{{ job.email }}/{{ job.id }}.jpeg"
-                        class="w-full h-full object-content">
-                </div>
-                {% endfor %}
+                class="absolute inset-0 bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg card-hover transition-fast touch-none">
+                <img src="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/{{ job.email }}/{{ job.id }}.jpeg"
+                    class="w-full h-full object-cover">
             </div>
+            {% endfor %}
         </div>
 
 
@@ -198,6 +194,70 @@
                     icon.classList.replace('fa-moon', 'fa-sun');
                 }
             });
+        });
+
+        const deck = document.getElementById('swipe-deck');
+        let cards = Array.from(deck.children).reverse(); // stack top last
+        let startX = 0, currentX = 0, isDragging = false, currentCard = null;
+
+        function setTransform(card, x, y, rotate) {
+            card.style.transform = `translate(${x}px, ${y}px) rotate(${rotate}deg)`;
+        }
+
+        function handleGesture(card, x) {
+            const moveOutWidth = document.body.offsetWidth * 0.35;
+            if (Math.abs(x) > moveOutWidth) {
+                const endX = x > 0 ? deck.offsetWidth * 2 : -deck.offsetWidth * 2;
+                card.style.transition = "transform 0.3s ease-out";
+                setTransform(card, endX, 0, x > 0 ? 30 : -30);
+                setTimeout(() => {
+                    card.remove();
+                    cards = Array.from(deck.children).reverse();
+                }, 300);
+            } else {
+                card.style.transition = "transform 0.3s ease-out";
+                setTransform(card, 0, 0, 0);
+            }
+        }
+
+        deck.addEventListener('mousedown', (e) => {
+            if (!cards.length) return;
+            currentCard = cards[cards.length - 1];
+            startX = e.clientX;
+            isDragging = true;
+            currentCard.style.transition = "none";
+        });
+
+        deck.addEventListener('touchstart', (e) => {
+            if (!cards.length) return;
+            currentCard = cards[cards.length - 1];
+            startX = e.touches[0].clientX;
+            isDragging = true;
+            currentCard.style.transition = "none";
+        });
+
+        deck.addEventListener('mousemove', (e) => {
+            if (!isDragging || !currentCard) return;
+            currentX = e.clientX - startX;
+            setTransform(currentCard, currentX, 0, currentX / 10);
+        });
+
+        deck.addEventListener('touchmove', (e) => {
+            if (!isDragging || !currentCard) return;
+            currentX = e.touches[0].clientX - startX;
+            setTransform(currentCard, currentX, 0, currentX / 10);
+        });
+
+        deck.addEventListener('mouseup', () => {
+            if (!isDragging || !currentCard) return;
+            isDragging = false;
+            handleGesture(currentCard, currentX);
+        });
+
+        deck.addEventListener('touchend', () => {
+            if (!isDragging || !currentCard) return;
+            isDragging = false;
+            handleGesture(currentCard, currentX);
         });
     </script>
 </body>
