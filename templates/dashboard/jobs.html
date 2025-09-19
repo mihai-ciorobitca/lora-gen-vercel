@@ -65,8 +65,9 @@
               <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-600">
                 <span class="font-bold text-left">ID: {{ job.id }}</span>
                 <span class="text-sm text-gray-500 dark:text-gray-400 text-right">
-                  {{ job.created_at | date("M d, Y, H:i 'UTC'") }}
+                  {{ job.created_at[:10] }} {{ job.created_at[11:16] }} UTC
                 </span>
+
               </div>
 
               <!-- Image or placeholder -->
