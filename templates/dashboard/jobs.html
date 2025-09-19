@@ -75,7 +75,7 @@
                 {% if job.status %}
                 <img
                   src="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/mihai.ciorobitca@outlook.com/{{ job.id }}.jpeg"
-                  alt="Job {{ job.id }}" class="object-cover w-full h-full">
+                  alt="Job {{ job.id }}" class="object-contain w-full h-full">
                 {% else %}
                 <div
                   class="w-full h-full bg-gray-400 flex items-center justify-center text-gray-700 dark:text-gray-200">
@@ -83,6 +83,7 @@
                 </div>
                 {% endif %}
               </div>
+
 
               <!-- Card footer with status & download button -->
               <div class="p-4 flex justify-between items-center">
