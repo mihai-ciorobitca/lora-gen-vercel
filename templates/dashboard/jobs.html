@@ -7,6 +7,16 @@
   <title>Dashboard Jobs</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    /* Hide scrollbar for all browsers */
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-hide {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+  </style>
 </head>
 
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 overflow-hidden">
@@ -50,11 +60,11 @@
     </div>
 
     <!-- Main content (scrollable) -->
-    <main class="flex-1 mt-64 p-6 overflow-y-auto">
+    <main class="flex-1 mt-64 p-6">
       <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 flex flex-col space-y-6">
         <h2 class="text-xl font-semibold">Jobs</h2>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xlg:grid-cols-4 gap-4">
           {% for job in jobs %}
           <div class="bg-gray-50 dark:bg-gray-700 rounded-lg shadow hover:shadow-lg transition flex flex-col">
             <!-- Card header -->
@@ -65,13 +75,13 @@
               </span>
             </div>
 
-            <!-- Image -->
-            <div class="w-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center">
+            <!-- Image (scrollable) -->
+            <div class="w-full h-64 bg-gray-300 dark:bg-gray-600 overflow-y-auto scrollbar-hide flex items-start justify-center">
               {% if job.status %}
               <img src="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/{{ job.email }}/{{ job.id }}.jpeg"
                 alt="Job {{ job.id }}" class="w-full h-auto">
               {% else %}
-              <div class="w-full h-64 bg-gray-400 flex items-center justify-center text-gray-700 dark:text-gray-200">
+              <div class="w-full h-full flex items-center justify-center text-gray-700 dark:text-gray-200">
                 <i data-feather="image-off" class="w-12 h-12"></i>
               </div>
               {% endif %}
