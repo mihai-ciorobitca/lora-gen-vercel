@@ -41,7 +41,7 @@
     </style>
 </head>
 
-<body class="h-screen bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-200 flex flex-col">
+<body class="h-screen bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-200 flex flex-col overflow-hidden">
 
     <!-- Desktop Header -->
     <header class="hidden lg:flex justify-between items-center bg-white dark:bg-gray-800 shadow px-6 py-3">
@@ -65,16 +65,26 @@
                 <span>Profile</span>
             </a>
 
+            <a href="{{ url_for('dashboard.basket') }}"
+                class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-gray-400 transition-fast text-lg">
+                <i class="fa-solid fa-basket-shopping text-base"></i>
+                <span>Basket</span>
+            </a>
+
+
             <button id="dark-toggle"
                 class="p-2 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-fast">
                 <i class="fa-solid fa-sun text-base" id="mode-icon"></i>
             </button>
 
-            <a href="{{ url_for('auth.logout') }}"
-                class="flex items-center space-x-1 bg-red-600 hover:bg-red-700 p-2 rounded-md text-white text-base transition-fast">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                <span>Logout</span>
-            </a>
+            <form action="{{ url_for('auth.logout') }}" method="POST">
+                <button type="submit"
+                    class="flex items-center space-x-1 bg-red-600 hover:bg-red-700 p-2 rounded-md text-white text-base transition-fast">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </button>
+            </form>
+
         </nav>
 
     </header>
@@ -121,16 +131,20 @@
                 <span>Profile</span>
             </a>
 
-            <button id="dark-toggle"
-                class="p-2 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-fast">
-                <i class="fa-solid fa-sun text-base" id="mode-icon"></i>
-            </button>
-
-            <a href="{{ url_for('auth.logout') }}"
-                class="flex items-center space-x-1 bg-red-600 hover:bg-red-700 p-2 rounded-md text-white text-base transition-fast">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                <span>Logout</span>
+            <a href="{{ url_for('dashboard.basket') }}"
+                class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-gray-400 transition-fast text-lg">
+                <i class="fa-solid fa-basket-shopping text-base"></i>
+                <span>Basket</span>
             </a>
+
+            <form action="{{ url_for('auth.logout') }}" method="POST">
+                <button type="submit"
+                    class="flex items-center space-x-1 bg-red-600 hover:bg-red-700 p-2 rounded-md text-white text-base transition-fast">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </button>
+            </form>
+
         </nav>
     </aside>
 
@@ -138,7 +152,7 @@
     <div id="overlay" class="fixed inset-0 bg-black opacity-50 hidden z-40 lg:hidden"></div>
 
     <!-- Main Content -->
-    <main class="flex-1 flex flex-col p-6 gap-6 mt-16 lg:mt-0 h-full max-w-5xl mx-auto w-full">
+    <main class="flex-1 flex flex-col p-6 gap-6 mt-16 lg:mt-0 h-full max-w-5xl mx-auto w-full overflow-auto">
 
         <!-- Tasks Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -146,7 +160,8 @@
                 class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm card-hover flex items-center justify-between transition-fast">
                 <div>
                     <h2 class="text-md font-medium text-gray-800 dark:text-gray-100">All Tasks</h2>
-                    <p class="text-gray-500 dark:text-gray-400 mt-1 text-lg font-semibold">120</p>
+                    <p class="text-gray-500 dark:text-gray-400 mt-1 text-lg font-semibold">{{ done_jobs + pending_jobs
+                        }}</p>
                 </div>
                 <i class="fa-solid fa-list-check text-blue-600 text-2xl"></i>
             </div>
@@ -154,7 +169,7 @@
                 class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm card-hover flex items-center justify-between transition-fast">
                 <div>
                     <h2 class="text-md font-medium text-gray-800 dark:text-gray-100">Completed</h2>
-                    <p class="text-gray-500 dark:text-gray-400 mt-1 text-lg font-semibold">80</p>
+                    <p class="text-gray-500 dark:text-gray-400 mt-1 text-lg font-semibold">{{ done_jobs }}</p>
                 </div>
                 <i class="fa-solid fa-circle-check text-green-600 text-2xl"></i>
             </div>
@@ -162,25 +177,23 @@
                 class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm card-hover flex items-center justify-between transition-fast">
                 <div>
                     <h2 class="text-md font-medium text-gray-800 dark:text-gray-100">Pending</h2>
-                    <p class="text-gray-500 dark:text-gray-400 mt-1 text-lg font-semibold">40</p>
+                    <p class="text-gray-500 dark:text-gray-400 mt-1 text-lg font-semibold">{{ pending_jobs }}</p>
                 </div>
                 <i class="fa-solid fa-hourglass-half text-yellow-600 text-2xl"></i>
             </div>
         </div>
 
         <div class="flex-1 overflow-auto mt-4">
-            <div class="flex overflow-x-auto snap-x snap-mandatory space-x-4 
-            md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 md:gap-4 no-scrollbar">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {% for job in jobs %}
-                <div
-                    class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm card-hover transition-fast flex-shrink-0 w-full h-[70vh] snap-center md:w-auto md:h-auto flex flex-col">
+                <div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm card-hover flex flex-col transition-fast">
 
                     <!-- Image -->
                     <img src="{% if job.status %}
-                        https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/{{ job.email }}/{{ job.id }}.jpeg
+                        https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/{{ job.email }}/generated_images/{{ job.id }}.jpeg
                       {% else %}
                         https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg
-                      {% endif %}" class="w-full h-2/3 object-cover">
+                      {% endif %}" class="w-full h-48 sm:h-56 md:h-64 object-cover rounded-t-lg">
 
                     <!-- Info -->
                     <div class="p-3 flex flex-col justify-between h-1/3">
@@ -221,42 +234,42 @@
     </main>
 
     <!-- Scripts -->
-    <script>
-        // Mobile sidebar
-        const sidebar = document.getElementById('mobile-sidebar');
-        const overlay = document.getElementById('overlay');
-        const openBtn = document.getElementById('open-sidebar');
-        const closeBtn = document.getElementById('close-sidebar');
+  <script>
+    // Mobile sidebar
+    const sidebar = document.getElementById('mobile-sidebar');
+    const overlay = document.getElementById('overlay');
+    const openBtn = document.getElementById('open-sidebar');
+    const closeBtn = document.getElementById('close-sidebar');
 
-        openBtn.addEventListener('click', () => {
-            sidebar.classList.remove('-translate-x-full');
-            overlay.classList.remove('hidden');
-        });
+    openBtn.addEventListener('click', () => {
+      sidebar.classList.remove('-translate-x-full');
+      overlay.classList.remove('hidden');
+    });
 
-        closeBtn.addEventListener('click', () => {
-            sidebar.classList.add('-translate-x-full');
-            overlay.classList.add('hidden');
-        });
+    closeBtn.addEventListener('click', () => {
+      sidebar.classList.add('-translate-x-full');
+      overlay.classList.add('hidden');
+    });
 
-        overlay.addEventListener('click', () => {
-            sidebar.classList.add('-translate-x-full');
-            overlay.classList.add('hidden');
-        });
+    overlay.addEventListener('click', () => {
+      sidebar.classList.add('-translate-x-full');
+      overlay.classList.add('hidden');
+    });
 
-        // Dark mode toggle
-        const darkToggle = document.querySelectorAll('#dark-toggle, #dark-toggle-mobile');
-        darkToggle.forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.documentElement.classList.toggle('dark');
-                const icon = btn.querySelector('i');
-                if (document.documentElement.classList.contains('dark')) {
-                    icon.classList.replace('fa-sun', 'fa-moon');
-                } else {
-                    icon.classList.replace('fa-moon', 'fa-sun');
-                }
-            });
-        });
-    </script>
+    // Dark mode toggle
+    const darkToggle = document.querySelectorAll('#dark-toggle, #dark-toggle-mobile');
+    darkToggle.forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        const icon = btn.querySelector('i');
+        if (document.documentElement.classList.contains('dark')) {
+          icon.classList.replace('fa-sun', 'fa-moon');
+        } else {
+          icon.classList.replace('fa-moon', 'fa-sun');
+        }
+      });
+    });
+  </script>
 </body>
 
 </html>

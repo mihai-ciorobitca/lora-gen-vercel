@@ -14,10 +14,9 @@ auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 
 @auth_bp.get("/login")
-@cache.cached(timeout=3600)
 def login_get():
     if "user" in session:
-        return redirect(url_for("dashboard.dashboard_get"))
+        return redirect(url_for("dashboard.home"))
     return render_template("auth/login.html", HCAPTCHA_SITE_KEY=HCAPTCHA_SITE_KEY)
 
 
@@ -63,9 +62,8 @@ def login_post():
 
 
 @auth_bp.get("/register")
-@cache.cached(timeout=3600)
 def register_get():
-    return render_template("auth/register.html")
+    return render_template("auth/register.html", HCAPTCHA_SITE_KEY=HCAPTCHA_SITE_KEY)
 
 
 @auth_bp.post("/register")

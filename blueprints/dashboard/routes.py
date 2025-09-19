@@ -5,6 +5,7 @@ from functools import wraps
 import requests
 import json
 import uuid
+import os
 
 
 dashboard_bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
@@ -33,6 +34,7 @@ def login_required(f):
 @dashboard_bp.route("/", methods=["GET", "POST"])
 @login_required
 def home(user):
+    email = session["user"]
     if request.method == "POST":
         prompt = request.form.get("prompt")
         unique_id = str(uuid.uuid4())
@@ -62,11 +64,23 @@ def home(user):
             flash("Failed to generate image.", "danger")
         return redirect(url_for("dashboard.home"))
 
+    all_files = supabase_admin.storage.from_(email).list("my_images")
+    images = [
+        {
+            "name": f["name"],
+            "url": f"https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/{email}/my_images/{f['name']}",
+        }
+        for f in all_files
+        if not f["name"].endswith(".emptyFolderPlaceholder")
+    ]
+
     return render_template(
         "dashboard/dashboard.html",
         user=user,
         restricted=not user.get("email_verified"),
+        images=images
     )
+
 
 @dashboard_bp.get("/jobs")
 @login_required
@@ -100,6 +114,48 @@ def jobs(user):
 @login_required
 def profile(user):
     return render_template("dashboard/profile.html", user=user)
+
+@dashboard_bp.route("/basket", methods=["GET", "POST"])
+@login_required
+def basket(user):
+    email = session["user"]
+    if request.method == "POST":
+        uploaded_files = request.files.getlist("new_images")
+
+        for file in uploaded_files:
+            if file.filename:
+                filename = f"{uuid.uuid4()}.jpeg"
+                path = f"my_images/{filename}"
+                file.stream.seek(0)
+                supabase_admin.storage.from_(email).upload(
+                    path, file.stream.read(), {"content-type": file.content_type}
+                )
+
+        return redirect(url_for("dashboard.basket"))
+    all_files = supabase_admin.storage.from_(email).list("my_images")
+    images = [
+        {
+            "name": f["name"],
+            "url": f"https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/{email}/my_images/{f['name']}",
+        }
+        for f in all_files
+        if not f["name"].endswith(".emptyFolderPlaceholder")
+    ]
+
+    return render_template("dashboard/basket.html", user=user, images=images)
+
+@dashboard_bp.route("/basket/delete", methods=["POST"])
+@login_required
+def delete_image(user):
+    email = session["user"]
+    to_delete = request.form.getlist("delete_images")
+
+    if to_delete:
+        paths = [f"my_images/{name}" for name in to_delete]
+        supabase_admin.storage.from_(email).remove(paths)
+
+    return redirect(url_for("dashboard.basket"))
+
 
 
 @dashboard_bp.post("/reset_password")

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .image-label input:checked+img {
+            border-color: #3b82f6;
+        }
+
+        .image-label input:checked~.image-overlay {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="h-screen bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-200 flex flex-col">
+
+    <!-- Desktop Header -->
+    <header class="hidden lg:flex justify-between items-center bg-white dark:bg-gray-800 shadow px-6 py-3">
+        <h1 class="text-2xl font-semibold">Dashboard</h1>
+        <nav class="flex items-center space-x-5">
+            <a href="{{ url_for('dashboard.home') }}"
+                class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-all text-lg">
+                <i class="fa-solid fa-house text-base"></i><span>Home</span>
+            </a>
+            <a href="{{ url_for('dashboard.jobs') }}"
+                class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-green-600 transition-all text-lg">
+                <i class="fa-solid fa-briefcase text-base"></i><span>Jobs</span>
+            </a>
+            <a href="{{ url_for('dashboard.profile') }}"
+                class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-gray-400 transition-all text-lg">
+                <i class="fa-solid fa-gear text-base"></i><span>Profile</span>
+            </a>
+            <a href="{{ url_for('dashboard.basket') }}"
+                class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-gray-400 transition-all text-lg">
+                <i class="fa-solid fa-basket-shopping text-base"></i><span>Basket</span>
+            </a>
+            <button id="dark-toggle"
+                class="p-2 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all">
+                <i class="fa-solid fa-sun text-base" id="mode-icon"></i>
+            </button>
+            <form action="{{ url_for('auth.logout') }}" method="POST">
+                <button type="submit"
+                    class="flex items-center space-x-1 bg-red-600 hover:bg-red-700 p-2 rounded-md text-white text-base transition-all">
+                    <i class="fa-solid fa-right-from-bracket"></i><span>Logout</span>
+                </button>
+            </form>
+        </nav>
+    </header>
+
+    <!-- Mobile Top Nav -->
+    <nav
+        class="fixed top-0 inset-x-0 bg-white dark:bg-gray-800 shadow flex justify-between items-center px-4 py-3 lg:hidden z-50">
+        <button id="open-sidebar"
+            class="p-2 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all">
+            <i class="fa-solid fa-bars text-lg"></i>
+        </button>
+        <h1 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Dashboard</h1>
+        <button id="dark-toggle-mobile"
+            class="p-2 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all">
+            <i class="fa-solid fa-sun text-lg"></i>
+        </button>
+    </nav>
+
+    <!-- Mobile Sidebar -->
+    <aside id="mobile-sidebar"
+        class="fixed inset-y-0 left-0 w-64 bg-white dark:bg-gray-800 shadow transform -translate-x-full transition-transform duration-300 z-50">
+        <div class="flex items-center justify-between p-4 border-b dark:border-gray-700">
+            <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Menu</h2>
+            <button id="close-sidebar" class="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-all">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <nav class="flex flex-col p-4 space-y-3">
+            <a href="{{ url_for('dashboard.home') }}"
+                class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-all text-lg">
+                <i class="fa-solid fa-house text-base"></i><span>Home</span>
+            </a>
+            <a href="{{ url_for('dashboard.jobs') }}"
+                class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-green-600 transition-all text-lg">
+                <i class="fa-solid fa-briefcase text-base"></i><span>Jobs</span>
+            </a>
+            <a href="{{ url_for('dashboard.profile') }}"
+                class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-gray-400 transition-all text-lg">
+                <i class="fa-solid fa-gear text-base"></i><span>Profile</span>
+            </a>
+            <a href="{{ url_for('dashboard.basket') }}"
+                class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-gray-400 transition-all text-lg">
+                <i class="fa-solid fa-basket-shopping text-base"></i><span>Basket</span>
+            </a>
+            <form action="{{ url_for('auth.logout') }}" method="POST">
+                <button type="submit"
+                    class="flex items-center space-x-1 bg-red-600 hover:bg-red-700 p-2 rounded-md text-white text-base transition-all">
+                    <i class="fa-solid fa-right-from-bracket"></i><span>Logout</span>
+                </button>
+            </form>
+        </nav>
+    </aside>
+
+    <!-- Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black opacity-50 hidden z-40 lg:hidden"></div>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col lg:flex-row gap-6 p-6 mt-16 lg:mt-0 w-full min-h-0">
+
+        <!-- Add New Images Form -->
+        <form id="add-images-form" method="POST" action="/dashboard/basket" enctype="multipart/form-data"
+            class="bg-white dark:bg-gray-800 rounded-lg shadow-md flex-1 flex flex-col p-6 min-h-0">
+
+            <h2 class="text-lg font-semibold mb-4">Add New Images</h2>
+
+            <!-- Preview container -->
+            <div id="new-image-list" class="grid grid-cols-2 gap-4 flex-1 overflow-y-auto min-h-0"></div>
+
+            <div class="flex gap-4 mt-4">
+                <label id="upload-btn"
+                    class="flex-1 px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-lg cursor-pointer text-center border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all">
+                    <i class="fa-solid fa-image"></i> Choose Images
+                    <input type="file" id="upload-input" name="new_images" multiple accept="image/*" class="hidden">
+                </label>
+
+                <button id="save-btn" type="submit" disabled
+                    class="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center justify-center gap-2 transition-all opacity-50 cursor-not-allowed">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Save
+                </button>
+            </div>
+        </form>
+
+        <!-- Uploaded Images Form -->
+        <form id="delete-images-form" method="POST" action="{{ url_for('dashboard.delete_image') }}"
+            class="bg-white dark:bg-gray-800 rounded-lg shadow-md flex-1 flex flex-col p-6 min-h-0">
+
+            <h2 class="text-lg font-semibold mb-4">Uploaded Images</h2>
+
+            <div id="image-list" class="grid grid-cols-2 gap-4 flex-1 overflow-y-auto min-h-0">
+                {% for img in images %}
+                <label class="image-label relative cursor-pointer">
+                    <input type="checkbox" name="delete_images" value="{{ img['name'] }}" class="peer hidden">
+                    <img src="{{ img['url'] }}" alt="Image {{ loop.index }}"
+                        class="w-full h-48 object-cover rounded-lg border border-gray-300 dark:border-gray-600">
+                    <div
+                        class="image-overlay absolute inset-0 bg-black/40 opacity-0 peer-checked:opacity-100 transition-all rounded-lg">
+                    </div>
+                </label>
+                {% endfor %}
+            </div>
+
+            <button id="delete-btn" type="submit" disabled
+                class="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg flex items-center justify-center gap-2 transition-all opacity-50 cursor-not-allowed mt-4">
+                <i class="fa-solid fa-trash"></i> Delete
+            </button>
+        </form>
+    </main>
+    <!-- Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const imageList = document.getElementById('new-image-list');
+            const uploadInput = document.getElementById('upload-input');
+            const saveBtn = document.getElementById('save-btn');
+            const deleteBtn = document.getElementById('delete-btn');
+
+            // Preview selected images
+            uploadInput.addEventListener('change', () => {
+                imageList.innerHTML = '';
+                const files = Array.from(uploadInput.files);
+                files.forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = e => {
+                        const label = document.createElement('label');
+                        label.className = 'image-label relative cursor-pointer';
+                        label.innerHTML = `
+                            <input type="checkbox" name="delete_images" class="peer hidden">
+                            <img src="${e.target.result}" alt="New Image"
+                                class="w-full h-48 object-cover rounded-lg border border-gray-300 dark:border-gray-600">
+                            <div class="image-overlay absolute inset-0 bg-black/40 opacity-0 peer-checked:opacity-100 transition-all rounded-lg"></div>
+                        `;
+                        imageList.appendChild(label);
+                    };
+                    reader.readAsDataURL(file);
+                });
+
+                saveBtn.disabled = files.length === 0;
+                saveBtn.classList.toggle('opacity-50', files.length === 0);
+                saveBtn.classList.toggle('cursor-not-allowed', files.length === 0);
+            });
+
+            // Mobile sidebar toggle
+            const sidebar = document.getElementById('mobile-sidebar');
+            const overlay = document.getElementById('overlay');
+            const openBtn = document.getElementById('open-sidebar');
+            const closeBtn = document.getElementById('close-sidebar');
+
+            openBtn.addEventListener('click', () => { sidebar.classList.remove('-translate-x-full'); overlay.classList.remove('hidden'); });
+            closeBtn.addEventListener('click', () => { sidebar.classList.add('-translate-x-full'); overlay.classList.add('hidden'); });
+            overlay.addEventListener('click', () => { sidebar.classList.add('-translate-x-full'); overlay.classList.add('hidden'); });
+
+            // Dark mode toggle
+            const darkToggle = document.querySelectorAll('#dark-toggle, #dark-toggle-mobile');
+            darkToggle.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.documentElement.classList.toggle('dark');
+                    const icon = btn.querySelector('i');
+                    if (document.documentElement.classList.contains('dark')) icon.classList.replace('fa-sun', 'fa-moon');
+                    else icon.classList.replace('fa-moon', 'fa-sun');
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

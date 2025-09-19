@@ -65,16 +65,26 @@
         <span>Profile</span>
       </a>
 
+      <a href="{{ url_for('dashboard.basket') }}"
+        class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-gray-400 transition-fast text-lg">
+        <i class="fa-solid fa-basket-shopping text-base"></i>
+        <span>Basket</span>
+      </a>
+
+
       <button id="dark-toggle"
         class="p-2 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-fast">
         <i class="fa-solid fa-sun text-base" id="mode-icon"></i>
       </button>
 
-      <a href="{{ url_for('auth.logout') }}"
-        class="flex items-center space-x-1 bg-red-600 hover:bg-red-700 p-2 rounded-md text-white text-base transition-fast">
-        <i class="fa-solid fa-right-from-bracket"></i>
-        <span>Logout</span>
-      </a>
+      <form action="{{ url_for('auth.logout') }}" method="POST">
+        <button type="submit"
+          class="flex items-center space-x-1 bg-red-600 hover:bg-red-700 p-2 rounded-md text-white text-base transition-fast">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Logout</span>
+        </button>
+      </form>
+
     </nav>
   </header>
 
@@ -120,16 +130,20 @@
         <span>Profile</span>
       </a>
 
-      <button id="dark-toggle"
-        class="p-2 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-fast">
-        <i class="fa-solid fa-sun text-base" id="mode-icon"></i>
-      </button>
-
-      <a href="{{ url_for('auth.logout') }}"
-        class="flex items-center space-x-1 bg-red-600 hover:bg-red-700 p-2 rounded-md text-white text-base transition-fast">
-        <i class="fa-solid fa-right-from-bracket"></i>
-        <span>Logout</span>
+      <a href="{{ url_for('dashboard.basket') }}"
+        class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-gray-400 transition-fast text-lg">
+        <i class="fa-solid fa-basket-shopping text-base"></i>
+        <span>Basket</span>
       </a>
+      
+      <form action="{{ url_for('auth.logout') }}" method="POST">
+        <button type="submit"
+          class="flex items-center space-x-1 bg-red-600 hover:bg-red-700 p-2 rounded-md text-white text-base transition-fast">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Logout</span>
+        </button>
+      </form>
+
     </nav>
   </aside>
 
@@ -173,9 +187,6 @@
       </button>
     </div>
   </main>
-
-
-
 
   <!-- Scripts -->
   <script>
