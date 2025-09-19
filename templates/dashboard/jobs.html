@@ -54,6 +54,13 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     {% for job in jobs %}
                     <div class="bg-gray-50 dark:bg-gray-700 rounded-lg shadow hover:shadow-lg transition transform hover:-translate-y-1">
+                        <!-- Card header with ID and created_at -->
+                        <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-600">
+                            <span class="font-bold">ID: {{ job.id }}</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">{{ job.created_at }}</span>
+                        </div>
+
+                        <!-- Image or placeholder -->
                         <div class="h-48 w-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center overflow-hidden">
                             {% if job.status %}
                                 <img src="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/mihai.ciorobitca@outlook.com/{{ job.id }}.jpeg" alt="Job {{ job.id }}" class="object-cover w-full h-full">
@@ -63,15 +70,22 @@
                                 </div>
                             {% endif %}
                         </div>
-                        <div class="p-4">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="font-bold">ID: {{ job.id }}</span>
-                                {% if job.status %}
-                                    <span class="text-green-500 font-semibold">Finished</span>
-                                {% else %}
-                                    <span class="text-yellow-500 font-semibold">Pending</span>
-                                {% endif %}
-                            </div>
+
+                        <!-- Card footer with status & download button -->
+                        <div class="p-4 flex justify-between items-center">
+                            {% if not job.status %}
+                                <span class="text-yellow-500 font-semibold">Pending</span>
+                            {% endif %}
+                            {% if job.status %}
+                                <a href="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/mihai.ciorobitca@outlook.com/{{ job.id }}.jpeg" download
+                                   class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded transition text-sm">
+                                    Download
+                                </a>
+                            {% endif %}
+                        </div>
+
+                        <!-- Prompt -->
+                        <div class="p-4 pt-0">
                             <p class="text-gray-600 dark:text-gray-300 text-sm truncate">{{ job.prompt }}</p>
                         </div>
                     </div>
