@@ -162,13 +162,39 @@
                 class="flex overflow-x-auto snap-x snap-mandatory space-x-4 md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 md:gap-4 no-scrollbar">
                 {% for job in jobs %}
                 <div
-                    class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm card-hover transition-fast flex-shrink-0 w-full h-[70vh] snap-center md:w-auto md:h-auto">
-                    <img src="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/{{ job.email }}/{{ job.id }}.jpeg"
-                        class="w-full h-auto object-cover">
+                    class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm card-hover transition-fast flex-shrink-0 w-full h-[70vh] snap-center md:w-auto md:h-auto flex flex-col">
+
+                    <!-- Image -->
+                    <img src="{% if job.status %}
+                        https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/{{ job.email }}/{{ job.id }}.jpeg
+                      {% else %}
+                        https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg
+                      {% endif %}" class="w-full h-2/3 object-cover">
+
+                    <!-- Info -->
+                    <div class="p-3 flex flex-col justify-between h-1/3">
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Created: {{ job.created_at }}</p>
+                        <p class="text-xs truncate text-gray-600 dark:text-gray-300">ID: {{ job.id }}</p>
+                        <p class="text-sm font-medium truncate text-gray-800 dark:text-gray-200">
+                            {{ job.prompt }}
+                        </p>
+
+                        <!-- Download Button -->
+                        <a href="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/{{ job.email }}/{{ job.id }}.jpeg"
+                            download class="mt-2 inline-block text-center px-3 py-1 rounded-lg text-white text-sm
+                          {% if job.status %}
+                              bg-blue-600 hover:bg-blue-700
+                          {% else %}
+                              bg-gray-400 cursor-not-allowed
+                          {% endif %}" {% if not job.status %}disabled{% endif %}>
+                            Download
+                        </a>
+                    </div>
                 </div>
                 {% endfor %}
             </div>
         </div>
+
 
 
     </main>
