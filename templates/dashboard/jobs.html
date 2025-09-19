@@ -45,10 +45,10 @@
 
         <!-- Images Grid -->
         <div class="flex-1 overflow-auto mt-4">
-            <div class="grid grid-cols-4 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                 {% for job in jobs %}
                 <div class="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition">
-                    <img src="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/{{ job.email }}/{{ job.id }}.jpeg" class="w-full h-32 object-cover">
+                    <img src="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/{{ job.email }}/{{ job.id }}.jpeg" class="w-full h-auto object-contain">
                 </div>
                 {% endfor %}
             </div>
