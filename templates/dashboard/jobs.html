@@ -1,112 +1,89 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jobs Dashboard | Tailwind</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Tailwind Icons -->
-  <script src="https://unpkg.com/feather-icons"></script>
-  <style>
-    /* Minimal custom CSS */
-    .scrollbar-thin::-webkit-scrollbar {
-      width: 6px;
-    }
-    .scrollbar-thin::-webkit-scrollbar-thumb {
-      background-color: rgba(100, 116, 139, 0.5);
-      border-radius: 3px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Jobs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
 
-  <div class="flex min-h-screen">
-    <!-- Sidebar -->
-    <aside class="w-64 bg-white shadow-md flex-shrink-0">
-      <div class="p-6">
-        <h1 class="text-2xl font-bold text-blue-600 mb-8 text-center">JobPortal</h1>
-        <nav class="flex flex-col gap-3">
-          <a href="#" class="flex items-center gap-3 text-gray-700 hover:bg-blue-50 rounded-md p-2">
-            <i data-feather="home"></i> Dashboard
-          </a>
-          <a href="#" class="flex items-center gap-3 text-gray-700 hover:bg-blue-50 rounded-md p-2">
-            <i data-feather="user"></i> User Profile
-          </a>
-          <a href="#" class="flex items-center gap-3 text-gray-700 hover:bg-blue-50 rounded-md p-2">
-            <i data-feather="briefcase"></i> Jobs
-          </a>
-        </nav>
-      </div>
-    </aside>
+<div class="min-h-screen flex flex-col">
+    <!-- Navigation -->
+    <header class="bg-white dark:bg-gray-800 shadow-md dark:shadow-lg flex items-center justify-between px-6 py-4">
+        <div class="flex items-center space-x-4">
+            <h1 class="text-2xl font-bold">Dashboard</h1>
+            <nav class="space-x-4 hidden md:flex">
+                <a href="/dashboard" class="hover:text-blue-500 transition">Home</a>
+                <a href="/dashboard/jobs" class="hover:text-blue-500 transition font-semibold">Jobs</a>
+                <a href="/dashboard/settings" class="hover:text-blue-500 transition">Settings</a>
+            </nav>
+        </div>
+        <div class="flex items-center space-x-4">
+            <span>{{ user.full_name }}</span>
+            <a href="/logout" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition">Logout</a>
+        </div>
+    </header>
 
-    <!-- Main Content -->
-    <div class="flex-1 flex flex-col">
-      <!-- Header -->
-      <header class="flex justify-between items-center p-4 bg-white shadow-sm">
-        <h2 class="text-xl font-bold">Jobs</h2>
-        <div class="flex items-center gap-4">
-          <button id="darkModeToggle" class="flex items-center gap-1 text-gray-600 hover:text-gray-900">
-            <i data-feather="moon"></i> Dark
-          </button>
-          <div class="relative">
-            <button class="flex items-center gap-2" id="profileDropdown">
-              <img src="https://www.gravatar.com/avatar/?d=mp&s=32" class="rounded-full">
-              <span>{{ user.full_name }}</span>
-            </button>
-            <div class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md hidden" id="dropdownMenu">
-              <div class="p-2 text-gray-600">{{ user.email }}</div>
-              <hr>
-              <form method="POST" action="{{ url_for('auth.logout') }}">
-                <button class="w-full text-left p-2 hover:bg-gray-100">Sign Out</button>
-              </form>
+    <!-- Main content -->
+    <main class="flex-1 p-6 space-y-6">
+        <!-- Stats cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 flex flex-col items-center transition hover:scale-105">
+                <i data-feather="clipboard" class="w-8 h-8 text-blue-500 mb-2"></i>
+                <span class="text-gray-500 dark:text-gray-400">Total Jobs</span>
+                <span class="text-2xl font-bold">{{ total_jobs }}</span>
             </div>
-          </div>
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 flex flex-col items-center transition hover:scale-105">
+                <i data-feather="clock" class="w-8 h-8 text-yellow-500 mb-2"></i>
+                <span class="text-gray-500 dark:text-gray-400">Pending Jobs</span>
+                <span class="text-2xl font-bold">{{ pending_jobs }}</span>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 flex flex-col items-center transition hover:scale-105">
+                <i data-feather="check-circle" class="w-8 h-8 text-green-500 mb-2"></i>
+                <span class="text-gray-500 dark:text-gray-400">Finished Jobs</span>
+                <span class="text-2xl font-bold">{{ finished_jobs }}</span>
+            </div>
         </div>
-      </header>
 
-      <!-- Content -->
-      <main class="p-6 flex-1 overflow-auto scrollbar-thin">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <!-- Total Jobs -->
-          <div class="bg-white shadow rounded-lg p-6 flex flex-col items-center gap-3 border-t-4 border-blue-500">
-            <i data-feather="list" class="text-blue-500"></i>
-            <h3 class="text-2xl font-bold">{{ pending_jobs + done_jobs }}</h3>
-            <p class="text-gray-500">Total Jobs</p>
-          </div>
-          <!-- Pending Jobs -->
-          <div class="bg-white shadow rounded-lg p-6 flex flex-col items-center gap-3 border-t-4 border-yellow-400">
-            <i data-feather="clock" class="text-yellow-400"></i>
-            <h3 class="text-2xl font-bold">{{ pending_jobs }}</h3>
-            <p class="text-gray-500">Pending Jobs</p>
-          </div>
-          <!-- Completed Jobs -->
-          <div class="bg-white shadow rounded-lg p-6 flex flex-col items-center gap-3 border-t-4 border-green-500">
-            <i data-feather="check-circle" class="text-green-500"></i>
-            <h3 class="text-2xl font-bold">{{ done_jobs }}</h3>
-            <p class="text-gray-500">Completed Jobs</p>
-          </div>
+        <!-- Jobs grid -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 overflow-hidden">
+            <h2 class="text-xl font-semibold mb-4">Jobs</h2>
+            <div class="overflow-x-auto">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {% for job in jobs %}
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg shadow hover:shadow-lg transition transform hover:-translate-y-1">
+                        <div class="h-48 w-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center overflow-hidden">
+                            {% if job.status %}
+                                <img src="{{ job.url }}" alt="Job {{ job.id }}" class="object-cover w-full h-full">
+                            {% else %}
+                                <div class="w-full h-full bg-gray-400 flex items-center justify-center text-gray-700 dark:text-gray-200">
+                                    <i data-feather="image-off" class="w-12 h-12"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="p-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold">ID: {{ job.id }}</span>
+                                {% if job.status %}
+                                    <span class="text-green-500 font-semibold">Finished</span>
+                                {% else %}
+                                    <span class="text-yellow-500 font-semibold">Pending</span>
+                                {% endif %}
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm truncate">{{ job.prompt }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
-      </main>
-    </div>
-  </div>
+    </main>
+</div>
 
-  <script>
-    // Feather Icons
-    feather.replace();
-
-    // Dropdown toggle
-    const profileBtn = document.getElementById('profileDropdown');
-    const dropdown = document.getElementById('dropdownMenu');
-    profileBtn.addEventListener('click', () => dropdown.classList.toggle('hidden'));
-
-    // Dark mode toggle
-    const darkToggle = document.getElementById('darkModeToggle');
-    darkToggle.addEventListener('click', () => {
-      document.body.classList.toggle('bg-gray-900');
-      document.body.classList.toggle('text-gray-100');
-    });
-  </script>
-
+<script>
+    feather.replace()
+</script>
 </body>
 </html>
