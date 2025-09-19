@@ -1,141 +1,217 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Text Generator | Dashboard</title>
+  <title>Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
 
-  <base href="{{ url_for('static', filename='') }}">
-  <link href="css/style.css" rel="stylesheet">
-  <script defer src="js/s.js"></script>
+    .card-hover:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .transition-fast {
+      transition: all 0.2s ease-in-out;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      /* IE/Edge */
+      scrollbar-width: none;
+      /* Firefox */
+    }
+  </style>
 </head>
 
-<body x-data="{
-        page: 'textGenerator',
-        loaded: true,
-        darkMode: JSON.parse(localStorage.getItem('darkMode')) || false,
-        sidebarToggle: false,
-        scrollTop: false,
-        isMobile: false,
-        isSidebarOpen: false
-      }"
-      x-init="$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
-      :class="{'dark bg-gray-900': darkMode}" class="h-full">
+<body class="h-screen bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-200 flex flex-col">
 
-  <!-- Preloader -->
-  <div x-show="loaded" class="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-black">
-    <div class="h-16 w-16 animate-spin rounded-full border-4 border-brand-500 border-t-transparent"></div>
-  </div>
+  <!-- Desktop Header -->
+  <header class="hidden lg:flex justify-between items-center bg-white dark:bg-gray-800 shadow px-6 py-3">
+    <h1 class="text-2xl font-semibold">Dashboard</h1>
+    <nav class="flex items-center space-x-5">
+      <a href="#"
+        class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-fast text-lg">
+        <i class="fa-solid fa-house text-base"></i>
+        <span>Home</span>
+      </a>
+      <a href="#"
+        class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-green-600 transition-fast text-lg">
+        <i class="fa-solid fa-briefcase text-base"></i>
+        <span>Jobs</span>
+      </a>
+      <a href="#"
+        class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-gray-400 transition-fast text-lg">
+        <i class="fa-solid fa-gear text-base"></i>
+        <span>Settings</span>
+      </a>
 
-  <!-- Page Wrapper -->
-  <div class="flex h-screen overflow-hidden">
+      <button id="dark-toggle"
+        class="p-2 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-fast">
+        <i class="fa-solid fa-sun text-base" id="mode-icon"></i>
+      </button>
 
-    <!-- Sidebar -->
-    <aside :class="sidebarToggle ? 'translate-x-0 xl:w-[90px]' : '-translate-x-full'"
-           class="fixed top-0 left-0 z-50 h-screen w-[290px] flex-col overflow-y-auto border-r border-gray-200 bg-white px-5 transition-all duration-300 xl:static xl:translate-x-0 dark:border-gray-800 dark:bg-black">
-      <!-- Sidebar Header -->
-      <div class="sidebar-header flex items-center justify-between pt-8 pb-7">
-        <span class="text-lg font-semibold text-gray-800 dark:text-white">Menu</span>
-      </div>
+      <button
+        class="flex items-center space-x-1 bg-red-600 hover:bg-red-700 p-2 rounded-md text-white text-base transition-fast">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Logout</span>
+      </button>
+    </nav>
+  </header>
 
-      <!-- Sidebar Menu -->
-      <nav x-data="{ selected: $persist('Dashboard') }" class="flex flex-col gap-1">
-        <ul class="mb-6 flex flex-col gap-1">
-          <li>
-            <a href="{{ url_for('dashboard.dashboard_get') }}"
-               @click.prevent="selected = (selected === 'Dashboard' ? '' : 'Dashboard')"
-               class="menu-item group flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800">
-              <span>Dashboard</span>
-            </a>
-          </li>
-          <li>
-            <a href="{{ url_for('dashboard.dashboard_user') }}"
-               @click="selected = (selected === 'Profile' ? '' : 'Profile')"
-               class="menu-item group flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800">
-              <span>User Profile</span>
-            </a>
-          </li>
-          <li>
-            <a href="{{ url_for('dashboard.dashboard_jobs') }}"
-               @click="selected = (selected === 'Jobs' ? '' : 'Jobs')"
-               class="menu-item group flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800">
-              <span>Jobs</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </aside>
+  <!-- Mobile Top Nav -->
+  <nav
+    class="fixed top-0 inset-x-0 bg-white dark:bg-gray-800 shadow flex justify-between items-center px-4 py-3 lg:hidden z-50">
+    <button id="open-sidebar"
+      class="p-2 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-fast">
+      <i class="fa-solid fa-bars text-lg"></i>
+    </button>
+    <h1 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Dashboard</h1>
+    <button id="dark-toggle-mobile"
+      class="p-2 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-fast">
+      <i class="fa-solid fa-sun text-lg"></i>
+    </button>
+  </nav>
 
-    <!-- Content Area -->
-    <div class="relative flex flex-1 flex-col overflow-x-hidden">
-
-      <!-- Header -->
-      <header x-data="{ menuToggle: false }"
-              class="sticky top-0 z-50 flex w-full items-center justify-between border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900 px-6 py-3">
-        <button @click.stop="sidebarToggle = !sidebarToggle"
-                class="flex h-10 w-10 items-center justify-center rounded-lg border dark:border-gray-800 dark:text-gray-400">
-          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
-        </button>
-
-        <div class="flex items-center gap-4">
-          <!-- Dark Mode Toggle -->
-          <button @click.prevent="darkMode = !darkMode"
-                  class="h-11 w-11 rounded-full border bg-white dark:border-gray-800 dark:bg-gray-900 flex items-center justify-center">
-            <svg x-show="!darkMode" class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10 2a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zm0 14a1 1 0 011 1v2a1 1 0 11-2 0v-2a1 1 0 011-1zM2 10a1 1 0 011-1h2a1 1 0 110 2H3a1 1 0 01-1-1zm14 0a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1z"/></svg>
-            <svg x-show="darkMode" class="w-5 h-5 text-gray-200" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M17.293 13.293a8 8 0 11-10.586-10.586 8 8 0 0010.586 10.586z"/>
-            </svg>
-          </button>
-
-          <!-- User Dropdown -->
-          <div class="relative" x-data="{ dropdownOpen: false }" @click.outside="dropdownOpen = false">
-            <button @click.prevent="dropdownOpen = !dropdownOpen"
-                    class="flex items-center gap-2">
-              <img class="h-11 w-11 rounded-full" src="https://www.gravatar.com/avatar/?d=mp&s=96" alt="User avatar">
-              <span class="text-sm font-medium">{{ user.full_name }}</span>
-              <svg :class="dropdownOpen ? 'rotate-180' : ''" class="w-4 h-4" fill="none" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-              </svg>
-            </button>
-
-            <div x-show="dropdownOpen"
-                 class="absolute right-0 mt-2 w-64 rounded-xl border border-gray-200 bg-white p-3 dark:border-gray-800 dark:bg-gray-900"
-                 style="display: none;">
-              <div class="mb-3">
-                <p class="text-sm font-medium text-gray-700 dark:text-gray-400">{{ user.full_name }}</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">{{ user.email }}</p>
-              </div>
-              <form method="POST" action="{{ url_for('auth.logout') }}">
-                <button class="w-full rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">
-                  Sign Out
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <!-- Main Content -->
-      <main class="flex-1 overflow-y-auto px-6 py-4">
-        <h1 class="text-xl font-semibold text-gray-800 dark:text-white">AI Text Generator</h1>
-
-        <form method="POST" action="{{ url_for('dashboard.dashboard_post') }}" enctype="multipart/form-data" class="mt-6 flex flex-col gap-4">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-400">Prompt</label>
-          <textarea name="prompt" id="prompt" required
-                    class="w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white"
-                    placeholder="Enter your prompt here..." {% if restricted %}disabled{% endif %}></textarea>
-          <button type="submit"
-                  class="w-full rounded-lg bg-brand-500 px-4 py-2 text-white hover:bg-brand-600"
-                  {% if restricted %}disabled{% endif %}>
-            Generate Image
-          </button>
-        </form>
-
-      </main>
+  <!-- Mobile Sidebar -->
+  <aside id="mobile-sidebar"
+    class="fixed inset-y-0 left-0 w-64 bg-white dark:bg-gray-800 shadow transform -translate-x-full transition-transform duration-300 z-50 lg:hidden">
+    <div class="flex items-center justify-between p-4 border-b dark:border-gray-700">
+      <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Menu</h2>
+      <button id="close-sidebar" class="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-fast">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
     </div>
-  </div>
+    <nav class="flex flex-col p-4 space-y-3">
+      <a href="#"
+        class="flex items-center space-x-2 p-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-fast">
+        <i class="fa-solid fa-house text-base text-blue-600"></i>
+        <span>Home</span>
+      </a>
+      <a href="#"
+        class="flex items-center space-x-2 p-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-fast">
+        <i class="fa-solid fa-briefcase text-base text-green-600"></i>
+        <span>Jobs</span>
+      </a>
+      <a href="#"
+        class="flex items-center space-x-2 p-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-fast">
+        <i class="fa-solid fa-gear text-base text-gray-500"></i>
+        <span>Settings</span>
+      </a>
+      <button
+        class="flex items-center space-x-2 p-2 rounded-md bg-red-600 hover:bg-red-700 text-white transition-fast mt-2">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Logout</span>
+      </button>
+    </nav>
+  </aside>
+
+  <!-- Overlay -->
+  <div id="overlay" class="fixed inset-0 bg-black opacity-50 hidden z-40 lg:hidden"></div>
+
+  <!-- Main Content -->
+  <main class="flex-1 overflow-auto p-6 flex flex-col gap-6 mt-16 lg:mt-0">
+
+    <!-- Tasks Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div
+        class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm card-hover flex items-center justify-between transition-fast">
+        <div>
+          <h2 class="text-md font-medium text-gray-800 dark:text-gray-100">All Tasks</h2>
+          <p class="text-gray-500 dark:text-gray-400 mt-1 text-lg font-semibold">120</p>
+        </div>
+        <i class="fa-solid fa-list-check text-blue-600 text-2xl"></i>
+      </div>
+      <div
+        class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm card-hover flex items-center justify-between transition-fast">
+        <div>
+          <h2 class="text-md font-medium text-gray-800 dark:text-gray-100">Completed</h2>
+          <p class="text-gray-500 dark:text-gray-400 mt-1 text-lg font-semibold">80</p>
+        </div>
+        <i class="fa-solid fa-circle-check text-green-600 text-2xl"></i>
+      </div>
+      <div
+        class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm card-hover flex items-center justify-between transition-fast">
+        <div>
+          <h2 class="text-md font-medium text-gray-800 dark:text-gray-100">Pending</h2>
+          <p class="text-gray-500 dark:text-gray-400 mt-1 text-lg font-semibold">40</p>
+        </div>
+        <i class="fa-solid fa-hourglass-half text-yellow-600 text-2xl"></i>
+      </div>
+    </div>
+
+    <!-- Generate Box -->
+    <div
+      class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 flex flex-col items-center justify-center gap-4 card-hover transition-fast">
+      <i class="fa-solid fa-robot text-4xl text-blue-600"></i>
+      <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 text-center">Generate New Content</h2>
+      <p class="text-gray-600 dark:text-gray-300 text-center">
+        Click the button below to generate new content dynamically.
+      </p>
+      <button
+        class="mt-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center gap-2 transition-fast">
+        <i class="fa-solid fa-circle-play"></i>
+        <span>Generate</span>
+      </button>
+    </div>
+
+  </main>
+
+
+  <!-- Scripts -->
+  <script>
+    // Mobile sidebar
+    const sidebar = document.getElementById('mobile-sidebar');
+    const overlay = document.getElementById('overlay');
+    const openBtn = document.getElementById('open-sidebar');
+    const closeBtn = document.getElementById('close-sidebar');
+
+    openBtn.addEventListener('click', () => {
+      sidebar.classList.remove('-translate-x-full');
+      overlay.classList.remove('hidden');
+    });
+
+    closeBtn.addEventListener('click', () => {
+      sidebar.classList.add('-translate-x-full');
+      overlay.classList.add('hidden');
+    });
+
+    overlay.addEventListener('click', () => {
+      sidebar.classList.add('-translate-x-full');
+      overlay.classList.add('hidden');
+    });
+
+    // Dark mode toggle
+    const darkToggle = document.querySelectorAll('#dark-toggle, #dark-toggle-mobile');
+    darkToggle.forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        const icon = btn.querySelector('i');
+        if (document.documentElement.classList.contains('dark')) {
+          icon.classList.replace('fa-sun', 'fa-moon');
+        } else {
+          icon.classList.replace('fa-moon', 'fa-sun');
+        }
+      });
+    });
+  </script>
 </body>
 
 </html>
