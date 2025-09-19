@@ -13,8 +13,7 @@
 
   <div class="min-h-screen flex flex-col">
     <!-- Fixed Header -->
-    <header
-      class="fixed top-0 w-full bg-white dark:bg-gray-800 shadow-md dark:shadow-lg flex items-center justify-between px-6 py-4 z-50">
+    <header class="fixed top-0 w-full bg-white dark:bg-gray-800 shadow-md dark:shadow-lg flex items-center justify-between px-6 py-4 z-50">
       <div class="flex items-center space-x-4">
         <h1 class="text-2xl font-bold">Dashboard</h1>
         <nav class="space-x-4 hidden md:flex">
@@ -31,23 +30,18 @@
 
     <!-- Fixed Stats Cards -->
     <div class="fixed top-20 w-full px-6 z-40">
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 
-              bg-white dark:bg-gray-800 shadow-lg rounded-xl p-4 
-              backdrop-blur-md">
-        <div
-          class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 flex flex-col items-center transition hover:scale-105">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 flex flex-col items-center transition hover:scale-105">
           <i data-feather="clipboard" class="w-8 h-8 text-blue-500 mb-2"></i>
           <span class="text-gray-500 dark:text-gray-400">Total Jobs</span>
           <span class="text-2xl font-bold">{{ total_jobs }}</span>
         </div>
-        <div
-          class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 flex flex-col items-center transition hover:scale-105">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 flex flex-col items-center transition hover:scale-105">
           <i data-feather="clock" class="w-8 h-8 text-yellow-500 mb-2"></i>
           <span class="text-gray-500 dark:text-gray-400">Pending Jobs</span>
           <span class="text-2xl font-bold">{{ pending_jobs }}</span>
         </div>
-        <div
-          class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 flex flex-col items-center transition hover:scale-105">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 flex flex-col items-center transition hover:scale-105">
           <i data-feather="check-circle" class="w-8 h-8 text-green-500 mb-2"></i>
           <span class="text-gray-500 dark:text-gray-400">Finished Jobs</span>
           <span class="text-2xl font-bold">{{ finished_jobs }}</span>
@@ -55,17 +49,15 @@
       </div>
     </div>
 
-
     <!-- Main content -->
-    <main class="flex-1 p-6 pt-72 space-y-6">
+    <main class="flex-1 p-6 pt-64 space-y-6">
       <!-- Jobs grid -->
       <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 overflow-hidden">
         <h2 class="text-xl font-semibold mb-4">Jobs</h2>
         <div class="overflow-x-auto">
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {% for job in jobs %}
-            <div
-              class="bg-gray-50 dark:bg-gray-700 rounded-lg shadow hover:shadow-lg transition transform hover:-translate-y-1">
+            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg shadow hover:shadow-lg transition transform hover:-translate-y-1">
               <!-- Card header with ID and formatted created_at -->
               <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-600">
                 <span class="font-bold text-left">ID: {{ job.id }}</span>
@@ -77,12 +69,10 @@
               <!-- Image or placeholder -->
               <div class="h-auto w-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center overflow-hidden">
                 {% if job.status %}
-                <img
-                  src="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/{{ job.email }}/{{ job.id }}.jpeg"
+                <img src="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/{{ job.email }}/{{ job.id }}.jpeg"
                   alt="Job {{ job.id }}" class="object-contain w-full h-full">
                 {% else %}
-                <div
-                  class="w-full h-full bg-gray-400 flex items-center justify-center text-gray-700 dark:text-gray-200">
+                <div class="w-full h-full bg-gray-400 flex items-center justify-center text-gray-700 dark:text-gray-200">
                   <i data-feather="image-off" class="w-12 h-12"></i>
                 </div>
                 {% endif %}
