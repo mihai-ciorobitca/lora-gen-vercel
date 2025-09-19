@@ -1,103 +1,117 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Jobs</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/feather-icons"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Jobs</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
 </head>
+
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
 
-<div class="min-h-screen flex flex-col">
+  <div class="min-h-screen flex flex-col">
     <!-- Navigation -->
     <header class="bg-white dark:bg-gray-800 shadow-md dark:shadow-lg flex items-center justify-between px-6 py-4">
-        <div class="flex items-center space-x-4">
-            <h1 class="text-2xl font-bold">Dashboard</h1>
-            <nav class="space-x-4 hidden md:flex">
-                <a href="/dashboard" class="hover:text-blue-500 transition">Home</a>
-                <a href="/dashboard/jobs" class="hover:text-blue-500 transition font-semibold">Jobs</a>
-                <a href="/dashboard/settings" class="hover:text-blue-500 transition">Settings</a>
-            </nav>
-        </div>
-        <div class="flex items-center space-x-4">
-            <span>{{ user.full_name }}</span>
-            <a href="/logout" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition">Logout</a>
-        </div>
+      <div class="flex items-center space-x-4">
+        <h1 class="text-2xl font-bold">Dashboard</h1>
+        <nav class="space-x-4 hidden md:flex">
+          <a href="/dashboard" class="hover:text-blue-500 transition">Home</a>
+          <a href="/dashboard/jobs" class="hover:text-blue-500 transition font-semibold">Jobs</a>
+          <a href="/dashboard/settings" class="hover:text-blue-500 transition">Settings</a>
+        </nav>
+      </div>
+      <div class="flex items-center space-x-4">
+        <span>{{ user.full_name }}</span>
+        <a href="/logout" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition">Logout</a>
+      </div>
     </header>
 
     <!-- Main content -->
     <main class="flex-1 p-6 space-y-6">
-        <!-- Stats cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 flex flex-col items-center transition hover:scale-105">
-                <i data-feather="clipboard" class="w-8 h-8 text-blue-500 mb-2"></i>
-                <span class="text-gray-500 dark:text-gray-400">Total Jobs</span>
-                <span class="text-2xl font-bold">{{ total_jobs }}</span>
-            </div>
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 flex flex-col items-center transition hover:scale-105">
-                <i data-feather="clock" class="w-8 h-8 text-yellow-500 mb-2"></i>
-                <span class="text-gray-500 dark:text-gray-400">Pending Jobs</span>
-                <span class="text-2xl font-bold">{{ pending_jobs }}</span>
-            </div>
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 flex flex-col items-center transition hover:scale-105">
-                <i data-feather="check-circle" class="w-8 h-8 text-green-500 mb-2"></i>
-                <span class="text-gray-500 dark:text-gray-400">Finished Jobs</span>
-                <span class="text-2xl font-bold">{{ finished_jobs }}</span>
-            </div>
+      <!-- Stats cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div
+          class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 flex flex-col items-center transition hover:scale-105">
+          <i data-feather="clipboard" class="w-8 h-8 text-blue-500 mb-2"></i>
+          <span class="text-gray-500 dark:text-gray-400">Total Jobs</span>
+          <span class="text-2xl font-bold">{{ total_jobs }}</span>
         </div>
+        <div
+          class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 flex flex-col items-center transition hover:scale-105">
+          <i data-feather="clock" class="w-8 h-8 text-yellow-500 mb-2"></i>
+          <span class="text-gray-500 dark:text-gray-400">Pending Jobs</span>
+          <span class="text-2xl font-bold">{{ pending_jobs }}</span>
+        </div>
+        <div
+          class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 flex flex-col items-center transition hover:scale-105">
+          <i data-feather="check-circle" class="w-8 h-8 text-green-500 mb-2"></i>
+          <span class="text-gray-500 dark:text-gray-400">Finished Jobs</span>
+          <span class="text-2xl font-bold">{{ finished_jobs }}</span>
+        </div>
+      </div>
 
-        <!-- Jobs grid -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 overflow-hidden">
-            <h2 class="text-xl font-semibold mb-4">Jobs</h2>
-            <div class="overflow-x-auto">
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {% for job in jobs %}
-                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg shadow hover:shadow-lg transition transform hover:-translate-y-1">
-                        <!-- Card header with ID and created_at -->
-                        <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-600">
-                            <span class="font-bold">ID: {{ job.id }}</span>
-                            <span class="text-sm text-gray-500 dark:text-gray-400">{{ job.created_at }}</span>
-                        </div>
+      <!-- Jobs grid -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 overflow-hidden">
+        <h2 class="text-xl font-semibold mb-4">Jobs</h2>
+        <div class="overflow-x-auto">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {% for job in jobs %}
+            <div
+              class="bg-gray-50 dark:bg-gray-700 rounded-lg shadow hover:shadow-lg transition transform hover:-translate-y-1">
 
-                        <!-- Image or placeholder -->
-                        <div class="h-48 w-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center overflow-hidden">
-                            {% if job.status %}
-                                <img src="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/mihai.ciorobitca@outlook.com/{{ job.id }}.jpeg" alt="Job {{ job.id }}" class="object-cover w-full h-full">
-                            {% else %}
-                                <div class="w-full h-full bg-gray-400 flex items-center justify-center text-gray-700 dark:text-gray-200">
-                                    <i data-feather="image-off" class="w-12 h-12"></i>
-                                </div>
-                            {% endif %}
-                        </div>
+              <!-- Card header with ID and formatted created_at -->
+              <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-600">
+                <span class="font-bold text-left">ID: {{ job.id }}</span>
+                <span class="text-sm text-gray-500 dark:text-gray-400 text-right">
+                  {{ job.created_at | date("M d, Y, H:i 'UTC'") }}
+                </span>
+              </div>
 
-                        <!-- Card footer with status & download button -->
-                        <div class="p-4 flex justify-between items-center">
-                            {% if not job.status %}
-                                <span class="text-yellow-500 font-semibold">Pending</span>
-                            {% endif %}
-                            {% if job.status %}
-                                <a href="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/mihai.ciorobitca@outlook.com/{{ job.id }}.jpeg" download
-                                   class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded transition text-sm">
-                                    Download
-                                </a>
-                            {% endif %}
-                        </div>
-
-                        <!-- Prompt -->
-                        <div class="p-4 pt-0">
-                            <p class="text-gray-600 dark:text-gray-300 text-sm truncate">{{ job.prompt }}</p>
-                        </div>
-                    </div>
-                    {% endfor %}
+              <!-- Image or placeholder -->
+              <div class="h-48 w-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center overflow-hidden">
+                {% if job.status %}
+                <img
+                  src="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/mihai.ciorobitca@outlook.com/{{ job.id }}.jpeg"
+                  alt="Job {{ job.id }}" class="object-cover w-full h-full">
+                {% else %}
+                <div
+                  class="w-full h-full bg-gray-400 flex items-center justify-center text-gray-700 dark:text-gray-200">
+                  <i data-feather="image-off" class="w-12 h-12"></i>
                 </div>
-            </div>
-        </div>
-    </main>
-</div>
+                {% endif %}
+              </div>
 
-<script>
+              <!-- Card footer with status & download button -->
+              <div class="p-4 flex justify-between items-center">
+                {% if not job.status %}
+                <span class="text-yellow-500 font-semibold">Pending</span>
+                {% endif %}
+                {% if job.status %}
+                <a href="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/mihai.ciorobitca@outlook.com/{{ job.id }}.jpeg"
+                  download class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded transition text-sm">
+                  Download
+                </a>
+                {% endif %}
+              </div>
+
+              <!-- Prompt -->
+              <div class="p-4 pt-0">
+                <p class="text-gray-600 dark:text-gray-300 text-sm truncate">{{ job.prompt }}</p>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
     feather.replace()
-</script>
+  </script>
 </body>
+
 </html>
