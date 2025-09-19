@@ -366,18 +366,22 @@
                 </div>
               </article>
             </div>
+
             <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700 h-[calc(100vh-300px)]">
               <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
                 {% for job in jobs %}
                 <div
-                  class="bg-white dark:bg-gray-900 rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                  class="bg-white dark:bg-gray-900 rounded-2xl shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-xl">
 
                   <!-- Image Preview -->
-                  <div class="relative">
+                  <div class="relative group">
                     <img
                       src="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/{{ user.email }}/{{ job.id }}.jpeg"
-                      alt="Preview" class="w-full h-48 object-cover rounded-t-2xl transition-transform hover:scale-105">
-                    <span class="absolute top-2 left-2 bg-gray-800 text-white text-xs px-2 py-1 rounded">
+                      alt="Preview"
+                      class="w-full h-48 object-cover rounded-t-2xl transition-transform duration-300 group-hover:scale-105">
+
+                    <span
+                      class="absolute top-2 left-2 bg-gray-900 bg-opacity-70 text-white text-xs px-2 py-1 rounded transition-all duration-300 group-hover:bg-opacity-90">
                       {{ job.created_at.split('.')[0].replace('T', ' ') }}
                     </span>
                   </div>
@@ -385,48 +389,52 @@
                   <!-- Content -->
                   <div class="p-4 flex flex-col gap-3">
                     <!-- Prompt -->
-                    <p class="text-gray-700 dark:text-gray-300 text-sm truncate">{{ job.prompt }}</p>
+                    <p class="text-gray-700 dark:text-gray-300 text-sm line-clamp-2">{{ job.prompt }}</p>
 
-                    <!-- Buttons -->
-                    <div class="flex justify-between items-center gap-2">
+                    <!-- Buttons and Status -->
+                    <div class="flex justify-between items-center gap-2 mt-2">
                       <!-- Download Button -->
                       <a href="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/{{ user.email }}/{{ job.id }}.jpeg"
                         download="{{ job.id }}.jpeg"
-                        class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg text-center transition-colors">
+                        class="flex-1 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-indigo-500 hover:to-blue-500 text-white text-sm font-medium px-4 py-2 rounded-lg text-center transition-all duration-300 shadow-md hover:shadow-lg">
                         Download
                       </a>
 
-                      <!-- View Button -->
-                      <a href="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/{{ user.email }}/{{ job.id }}.jpeg"
-                        target="_blank" rel="noopener noreferrer"
-                        class="flex-1 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-300 text-sm font-medium px-4 py-2 rounded-lg text-center transition-colors">
-                        View
-                      </a>
-                    </div>
-
-                    <!-- Status -->
-                    <div class="flex justify-center items-center mt-2">
-                      {% if job.status == False %}
-                      <span class="text-yellow-500 text-xl">⏳</span>
-                      {% else %}
-                      <span class="text-green-500 text-xl">✅</span>
-                      {% endif %}
+                      <!-- Status -->
+                      <div class="flex justify-center items-center mt-2">
+                        {% if job.status == False %}
+                        <span class="text-yellow-500 text-2xl animate-pulse">⏳</span>
+                        {% else %}
+                        <span class="text-green-500 text-2xl">✅</span>
+                        {% endif %}
+                      </div>
                     </div>
                   </div>
                 </div>
                 {% endfor %}
               </div>
 
-            </div>
-
-
-            <div class="flex justify-end mt-4">
-              <ul class="flex items-center space-x-2">
-                <li>
-                  {% if page > 0 %}
-                  <form action="{{ url_for('dashboard.first_page') }}" method="post">
-                    <button type="submit"
-                      class="inline-flex items-center justify-center w-10 h-10 transition-colors duration-150 rounded-full focus:shadow-outline hover:bg-gray-100 text-gray-700 dark:text-gray-200 dark:hover:bg-gray-700">
+              <!-- Pagination -->
+              <div class="flex justify-end mt-4">
+                <ul class="flex items-center space-x-2">
+                  <!-- First Page -->
+                  <li>
+                    {% if page > 0 %}
+                    <form action="{{ url_for('dashboard.first_page') }}" method="post">
+                      <button type="submit"
+                        class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition-all duration-150">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path
+                            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                            clip-rule="evenodd" fill-rule="evenodd"></path>
+                          <path
+                            d="M7.707 5.293a1 1 0 010 1.414L4.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                            clip-rule="evenodd" fill-rule="evenodd"></path>
+                        </svg>
+                      </button>
+                    </form>
+                    {% else %}
+                    <button disabled class="w-10 h-10 rounded-full text-gray-400 dark:text-gray-600 cursor-not-allowed">
                       <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                         <path
                           d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
@@ -436,84 +444,68 @@
                           clip-rule="evenodd" fill-rule="evenodd"></path>
                       </svg>
                     </button>
-                  </form>
-                  {% else %}
-                  <button disabled
-                    class="inline-flex items-center justify-center w-10 h-10 text-gray-400 cursor-not-allowed rounded-full dark:text-gray-600">
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                      <path
-                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                        clip-rule="evenodd" fill-rule="evenodd"></path>
-                      <path
-                        d="M7.707 5.293a1 1 0 010 1.414L4.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                        clip-rule="evenodd" fill-rule="evenodd"></path>
-                    </svg>
-                  </button>
-                  {% endif %}
-                </li>
+                    {% endif %}
+                  </li>
 
-                <li>
-                  {% if page > 0 %}
-                  <form action="{{ url_for('dashboard.prev_page') }}" method="post">
-                    <button type="submit"
-                      class="inline-flex items-center justify-center w-10 h-10 transition-colors duration-150 rounded-full focus:shadow-outline hover:bg-gray-100 text-gray-700 dark:text-gray-200 dark:hover:bg-gray-700">
+                  <!-- Previous Page -->
+                  <li>
+                    {% if page > 0 %}
+                    <form action="{{ url_for('dashboard.prev_page') }}" method="post">
+                      <button type="submit"
+                        class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition-all duration-150">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path
+                            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                            clip-rule="evenodd" fill-rule="evenodd"></path>
+                        </svg>
+                      </button>
+                    </form>
+                    {% else %}
+                    <button disabled class="w-10 h-10 rounded-full text-gray-400 dark:text-gray-600 cursor-not-allowed">
                       <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                         <path
                           d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
                           clip-rule="evenodd" fill-rule="evenodd"></path>
                       </svg>
                     </button>
-                  </form>
-                  {% else %}
-                  <button disabled
-                    class="inline-flex items-center justify-center w-10 h-10 text-gray-400 cursor-not-allowed rounded-full dark:text-gray-600">
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                      <path
-                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                        clip-rule="evenodd" fill-rule="evenodd"></path>
-                    </svg>
-                  </button>
-                  {% endif %}
-                </li>
+                    {% endif %}
+                  </li>
 
-                <li>
-                  {% if has_next_page > 0 %}
-                  <form action="{{ url_for('dashboard.next_page') }}" method="post">
-                    <button type="submit"
-                      class="inline-flex items-center justify-center w-10 h-10 transition-colors duration-150 rounded-full focus:shadow-outline hover:bg-gray-100 text-gray-700 dark:text-gray-200 dark:hover:bg-gray-700">
+                  <!-- Next Page -->
+                  <li>
+                    {% if has_next_page > 0 %}
+                    <form action="{{ url_for('dashboard.next_page') }}" method="post">
+                      <button type="submit"
+                        class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition-all duration-150">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10l-3.293-3.293a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd" fill-rule="evenodd"></path>
+                        </svg>
+                      </button>
+                    </form>
+                    {% else %}
+                    <button disabled class="w-10 h-10 rounded-full text-gray-400 dark:text-gray-600 cursor-not-allowed">
                       <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                         <path
                           d="M7.293 14.707a1 1 0 010-1.414L10.586 10l-3.293-3.293a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                           clip-rule="evenodd" fill-rule="evenodd"></path>
                       </svg>
                     </button>
-                  </form>
-                  {% else %}
-                  <button disabled
-                    class="inline-flex items-center justify-center w-10 h-10 text-gray-400 cursor-not-allowed rounded-full dark:text-gray-600">
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                      <path
-                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10l-3.293-3.293a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                        clip-rule="evenodd" fill-rule="evenodd"></path>
-                    </svg>
-                  </button>
-                  {% endif %}
-                </li>
-
-
-              </ul>
+                    {% endif %}
+                  </li>
+                </ul>
+              </div>
             </div>
 
 
           </div>
-
+          <!-- Content End -->
         </div>
-        <!-- Content End -->
+      </main>
+      <!-- ===== Main Content End ===== -->
     </div>
-    </main>
-    <!-- ===== Main Content End ===== -->
-  </div>
-  <!-- ===== Content Area End ===== -->
+    <!-- ===== Content Area End ===== -->
   </div>
   <!-- ===== Page Wrapper End ===== -->
   <script defer="" src="js/bundle.js"></script>
