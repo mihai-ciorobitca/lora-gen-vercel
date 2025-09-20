@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-from extensions import supabase, cache
+from extensions import supabase, cache, supabase_admin
 from utils.supabase_helpers import user_exists
 from os import getenv
 from requests import post
@@ -24,19 +24,19 @@ def login_get():
 def login_post():
     email = request.form.get("email")
     password = request.form.get("password")
-    # hcaptcha_token = request.form.get("h-captcha-response")
-    # verify_url = "https://hcaptcha.com/siteverify"
-    # payload = {
-    #     "secret": HCAPTCHA_SECRET,
-    #     "response": hcaptcha_token,
-    #     "remoteip": request.remote_addr,
-    # }
-    # resp = post(verify_url, data=payload).json()
-    # print(resp)
+    hcaptcha_token = request.form.get("h-captcha-response")
+    verify_url = "https://hcaptcha.com/siteverify"
+    payload = {
+        "secret": HCAPTCHA_SECRET,
+        "response": hcaptcha_token,
+        "remoteip": request.remote_addr,
+    }
+    resp = post(verify_url, data=payload).json()
+    print(resp)
 
-    # if not resp.get("success"):
-    #     flash("Captcha verification failed. Try again.", "login_danger")
-    #     return redirect(url_for("auth.login_get"))
+    if not resp.get("success"):
+        flash("Captcha verification failed. Try again.", "login_danger")
+        return redirect(url_for("auth.login_get"))
 
     if email == ADMIN_EMAIL and password == ADMIN_PASSWORD:
         session["is_admin"] = True
@@ -46,7 +46,6 @@ def login_post():
         resp = supabase.auth.sign_in_with_password(
             {"email": email, "password": password}
         )
-        print(resp)
         user, session_data = resp.user, resp.session
         if user and session_data:
             session["user"] = user.email
@@ -94,7 +93,20 @@ def register_post():
         if user and session_data:
             session["user"] = user.email
             session["user_id"] = user.id
-            flash("Registration successful!", "register_success")
+            email = session["user"]
+            try:
+                supabase_admin.storage.create_bucket(email, {"public": True})
+                supabase_admin.storage.from_(email).upload(
+                    "my_images/.keep", b"", {"upsert": True}
+                )
+                supabase_admin.storage.from_(email).upload(
+                    "generated_images/.keep", b"", {"upsert": True}
+                )
+                flash("Registration failed, internal error!", "register_error")
+            except Exception as storage_err:
+                flash(
+                    f"Storage setup failed for {email}: {storage_err}", "register_error"
+                )
             return redirect(url_for("dashboard.dashboard"))
 
         flash("Please confirm your email.", "register_warning")

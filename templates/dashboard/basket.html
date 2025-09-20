@@ -13,19 +13,7 @@
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-
-        .image-label input:checked+img {
-            border-color: #3b82f6;
-        }
-
-        .image-label input:checked~.image-overlay {
-            opacity: 1;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 </head>
 
 <body class="h-screen bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-200 flex flex-col">
@@ -34,32 +22,7 @@
     <header class="hidden lg:flex justify-between items-center bg-white dark:bg-gray-800 shadow px-6 py-3">
         <h1 class="text-2xl font-semibold">Dashboard</h1>
         <nav class="flex items-center space-x-5">
-            <a href="{{ url_for('dashboard.home') }}"
-                class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-all text-lg">
-                <i class="fa-solid fa-house text-base"></i><span>Home</span>
-            </a>
-            <a href="{{ url_for('dashboard.jobs') }}"
-                class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-green-600 transition-all text-lg">
-                <i class="fa-solid fa-briefcase text-base"></i><span>Jobs</span>
-            </a>
-            <a href="{{ url_for('dashboard.profile') }}"
-                class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-gray-400 transition-all text-lg">
-                <i class="fa-solid fa-gear text-base"></i><span>Profile</span>
-            </a>
-            <a href="{{ url_for('dashboard.basket') }}"
-                class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-gray-400 transition-all text-lg">
-                <i class="fa-solid fa-basket-shopping text-base"></i><span>Basket</span>
-            </a>
-            <button id="dark-toggle"
-                class="p-2 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all">
-                <i class="fa-solid fa-sun text-base" id="mode-icon"></i>
-            </button>
-            <form action="{{ url_for('auth.logout') }}" method="POST">
-                <button type="submit"
-                    class="flex items-center space-x-1 bg-red-600 hover:bg-red-700 p-2 rounded-md text-white text-base transition-all">
-                    <i class="fa-solid fa-right-from-bracket"></i><span>Logout</span>
-                </button>
-            </form>
+            {% include "components/_navbar.html" %}
         </nav>
     </header>
 
@@ -87,28 +50,7 @@
             </button>
         </div>
         <nav class="flex flex-col p-4 space-y-3">
-            <a href="{{ url_for('dashboard.home') }}"
-                class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-all text-lg">
-                <i class="fa-solid fa-house text-base"></i><span>Home</span>
-            </a>
-            <a href="{{ url_for('dashboard.jobs') }}"
-                class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-green-600 transition-all text-lg">
-                <i class="fa-solid fa-briefcase text-base"></i><span>Jobs</span>
-            </a>
-            <a href="{{ url_for('dashboard.profile') }}"
-                class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-gray-400 transition-all text-lg">
-                <i class="fa-solid fa-gear text-base"></i><span>Profile</span>
-            </a>
-            <a href="{{ url_for('dashboard.basket') }}"
-                class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-gray-400 transition-all text-lg">
-                <i class="fa-solid fa-basket-shopping text-base"></i><span>Basket</span>
-            </a>
-            <form action="{{ url_for('auth.logout') }}" method="POST">
-                <button type="submit"
-                    class="flex items-center space-x-1 bg-red-600 hover:bg-red-700 p-2 rounded-md text-white text-base transition-all">
-                    <i class="fa-solid fa-right-from-bracket"></i><span>Logout</span>
-                </button>
-            </form>
+            {% include "components/_navbar.html" %}
         </nav>
     </aside>
 
@@ -167,69 +109,7 @@
         </form>
     </main>
     <!-- Scripts -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const imageList = document.getElementById('new-image-list');
-            const uploadInput = document.getElementById('upload-input');
-            const saveBtn = document.getElementById('save-btn');
-            const deleteBtn = document.getElementById('delete-btn');
-
-            // Preview selected images
-            uploadInput.addEventListener('change', () => {
-                imageList.innerHTML = '';
-                const files = Array.from(uploadInput.files);
-                files.forEach(file => {
-                    const reader = new FileReader();
-                    reader.onload = e => {
-                        const label = document.createElement('label');
-                        label.className = 'image-label relative cursor-pointer';
-                        label.innerHTML = `
-                            <input type="checkbox" name="delete_images" class="peer hidden">
-                            <img src="${e.target.result}" alt="New Image"
-                                class="w-full h-48 object-cover rounded-lg border border-gray-300 dark:border-gray-600">
-                            <div class="image-overlay absolute inset-0 bg-black/40 opacity-0 peer-checked:opacity-100 transition-all rounded-lg"></div>
-                        `;
-                        imageList.appendChild(label);
-                    };
-                    reader.readAsDataURL(file);
-                });
-
-                saveBtn.disabled = files.length === 0;
-                saveBtn.classList.toggle('opacity-50', files.length === 0);
-                saveBtn.classList.toggle('cursor-not-allowed', files.length === 0);
-            });
-
-            // Mobile sidebar toggle
-            const sidebar = document.getElementById('mobile-sidebar');
-            const overlay = document.getElementById('overlay');
-            const openBtn = document.getElementById('open-sidebar');
-            const closeBtn = document.getElementById('close-sidebar');
-
-            openBtn.addEventListener('click', () => { sidebar.classList.remove('-translate-x-full'); overlay.classList.remove('hidden'); });
-            closeBtn.addEventListener('click', () => { sidebar.classList.add('-translate-x-full'); overlay.classList.add('hidden'); });
-            overlay.addEventListener('click', () => { sidebar.classList.add('-translate-x-full'); overlay.classList.add('hidden'); });
-
-            // Dark mode toggle
-            const darkToggle = document.querySelectorAll('#dark-toggle, #dark-toggle-mobile');
-            darkToggle.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.documentElement.classList.toggle('dark');
-                    const icon = btn.querySelector('i');
-                    if (document.documentElement.classList.contains('dark')) icon.classList.replace('fa-sun', 'fa-moon');
-                    else icon.classList.replace('fa-moon', 'fa-sun');
-                });
-            });
-
-            const uploadedImageList = document.getElementById('image-list');
-            uploadedImageList.addEventListener('change', () => {
-                const checked = uploadedImageList.querySelectorAll('input[type="checkbox"]:checked').length > 0;
-                deleteBtn.disabled = !checked;
-                deleteBtn.classList.toggle('opacity-50', !checked);
-                deleteBtn.classList.toggle('cursor-not-allowed', !checked);
-            });
-
-        });
-    </script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 </body>
 
 </html>
