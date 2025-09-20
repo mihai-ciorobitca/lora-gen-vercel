@@ -29,7 +29,7 @@ def create_app():
     @app.route("/")
     @cache.cached(timeout=3600)
     def index():
-        return redirect(url_for("dashboard.dashboard_get"))
+        return redirect(url_for("dashboard.home"))
 
     @app.route("/pricing")
     @cache.cached(timeout=3600)
