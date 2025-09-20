@@ -165,7 +165,7 @@
         <div class="flex space-x-4">
           {% for image in images %}
           <label class="relative flex-shrink-0 cursor-pointer">
-            <input type="checkbox" name="images" value="{{ image.id }}" class="sr-only peer">
+            <input type="checkbox" name="images" value="{{ image.url }}" class="sr-only peer">
             <img src="{{ image.url }}" alt="{{ image.name }}"
               class="w-64 h-64 object-cover rounded-lg border-2 border-transparent peer-checked:border-blue-500">
             <div

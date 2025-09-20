@@ -219,6 +219,15 @@
                     else icon.classList.replace('fa-moon', 'fa-sun');
                 });
             });
+
+            const uploadedImageList = document.getElementById('image-list');
+            uploadedImageList.addEventListener('change', () => {
+                const checked = uploadedImageList.querySelectorAll('input[type="checkbox"]:checked').length > 0;
+                deleteBtn.disabled = !checked;
+                deleteBtn.classList.toggle('opacity-50', !checked);
+                deleteBtn.classList.toggle('cursor-not-allowed', !checked);
+            });
+
         });
     </script>
 </body>

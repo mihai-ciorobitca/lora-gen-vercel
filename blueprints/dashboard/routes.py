@@ -38,6 +38,7 @@ def home(user):
     if request.method == "POST":
         prompt = request.form.get("prompt")
         unique_id = str(uuid.uuid4())
+        selected_images = request.form.getlist("images")
         url = "https://secret-api-gt36.onrender.com/webhook/generate-image"
         payload = {
             "email": session["user"],
@@ -45,12 +46,7 @@ def home(user):
             "data": {
                 "model": "seedream-4-0-250828",
                 "prompt": prompt,
-                "image": [
-                    # TODO:
-                    "https://drive.google.com/uc?export=view&id=1SIzeGV7N8VZDDeVOXIjozAjUUcLXIc8W",
-                    "https://drive.google.com/uc?export=view&id=1bEGLvhK_KGF1qzj991VIbVeFFknjyhK7",
-                    "https://drive.google.com/uc?export=view&id=1YHJh-xj6dUCXhGYjeRlV7Js2YnSXcK0m",
-                ],
+                "image": selected_images,
                 "size": "2K",
             },
         }
