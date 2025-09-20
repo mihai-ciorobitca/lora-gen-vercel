@@ -186,7 +186,8 @@
         <div class="flex-1 overflow-auto mt-4">
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {% for job in jobs %}
-                <div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm card-hover flex flex-col transition-fast">
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm card-hover flex flex-col transition-fast">
 
                     <!-- Image -->
                     <img src="{% if job.status %}
@@ -217,8 +218,8 @@
                         </div>
 
                         <!-- Download Button -->
-                        <a href="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/{{ job.email }}/{{ job.id }}.jpeg"
-                            download class="mt-2 inline-block text-center px-3 py-1 rounded-lg text-white text-sm
+                        <a href="https://ntvibateqvasbeygcsvr.supabase.co/storage/v1/object/public/{{ job.email }}/generated_images/{{ job.id }}.jpeg?download={{ job.id }}.jpeg"
+                            class="mt-2 inline-block text-center px-3 py-1 rounded-lg text-white text-sm
                           {% if job.status %}
                               bg-blue-600 hover:bg-blue-700
                           {% else %}
@@ -234,42 +235,42 @@
     </main>
 
     <!-- Scripts -->
-  <script>
-    // Mobile sidebar
-    const sidebar = document.getElementById('mobile-sidebar');
-    const overlay = document.getElementById('overlay');
-    const openBtn = document.getElementById('open-sidebar');
-    const closeBtn = document.getElementById('close-sidebar');
+    <script>
+        // Mobile sidebar
+        const sidebar = document.getElementById('mobile-sidebar');
+        const overlay = document.getElementById('overlay');
+        const openBtn = document.getElementById('open-sidebar');
+        const closeBtn = document.getElementById('close-sidebar');
 
-    openBtn.addEventListener('click', () => {
-      sidebar.classList.remove('-translate-x-full');
-      overlay.classList.remove('hidden');
-    });
+        openBtn.addEventListener('click', () => {
+            sidebar.classList.remove('-translate-x-full');
+            overlay.classList.remove('hidden');
+        });
 
-    closeBtn.addEventListener('click', () => {
-      sidebar.classList.add('-translate-x-full');
-      overlay.classList.add('hidden');
-    });
+        closeBtn.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+        });
 
-    overlay.addEventListener('click', () => {
-      sidebar.classList.add('-translate-x-full');
-      overlay.classList.add('hidden');
-    });
+        overlay.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+        });
 
-    // Dark mode toggle
-    const darkToggle = document.querySelectorAll('#dark-toggle, #dark-toggle-mobile');
-    darkToggle.forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.documentElement.classList.toggle('dark');
-        const icon = btn.querySelector('i');
-        if (document.documentElement.classList.contains('dark')) {
-          icon.classList.replace('fa-sun', 'fa-moon');
-        } else {
-          icon.classList.replace('fa-moon', 'fa-sun');
-        }
-      });
-    });
-  </script>
+        // Dark mode toggle
+        const darkToggle = document.querySelectorAll('#dark-toggle, #dark-toggle-mobile');
+        darkToggle.forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                const icon = btn.querySelector('i');
+                if (document.documentElement.classList.contains('dark')) {
+                    icon.classList.replace('fa-sun', 'fa-moon');
+                } else {
+                    icon.classList.replace('fa-moon', 'fa-sun');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
